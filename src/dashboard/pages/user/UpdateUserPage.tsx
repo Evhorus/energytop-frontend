@@ -1,0 +1,92 @@
+import { Link, Navigate, useParams } from "react-router-dom";
+import { UserForm } from "../../components/user/UserForm";
+import { UserFormInputs } from "../../../shared/interfaces/user.interface";
+import { useForm } from "react-hook-form";
+import { useUser, useUserMutation } from "../../";
+import { useEffect } from "react";
+import { useAppStore } from "../../../shared";
+
+export const UpdateUserPage = () => {
+    const userClaimsJwt = useAppStore((state) => state.claims);
+    const params = useParams();
+    const idUser = +params.id!;
+    const { user } = useUser(idUser);
+    const { updateUserMutation } = useUserMutation(idUser);
+
+    const {
+        register,
+        handleSubmit,
+        reset,
+        formState: { errors },
+    } = useForm<UserFormInputs>({
+        defaultValues: {
+            firstName: "",
+            lastName: "",
+            email: "",
+            password: "",
+        },
+    });
+
+    useEffect(() => {
+        if (user.data) {
+            // Actualiza el formulario con los datos del usuario cuando estén listos
+            reset({
+                firstName: user.data.firstName,
+                lastName: user.data.lastName || "",
+                email: user.data.email || "",
+                password: "", // No incluimos la contraseña por seguridad
+            });
+        }
+    }, [user.data, reset]);
+
+    // Muestra un loading mientras los datos están cargando
+    if (user.isLoading) return <p>Loading...</p>;
+
+    const handleForm = (formData: UserFormInputs) => {
+        const { password, ...rest } = formData;
+        const formWithId = {
+            idUser,
+            formData: {
+                ...rest,
+                password: password ? password : null,
+            },
+        };
+        updateUserMutation.mutate(formWithId);
+    };
+    if (!userClaimsJwt?.isAdmin) return <Navigate to="/dashboard" />;
+    return (
+        <>
+            <div className="max-w-3xl mx-auto">
+                <h1 className="text-4xl font-bold">Actualizar Usuario</h1>
+                <p className="text-2xl font-light text-gray-500 mt-5">
+                    Modifica el siguiente formulario para actualizar el usuario
+                </p>
+                <nav className="my-5">
+                    <Link
+                        to="/dashboard/users"
+                        className="bg-indigo-500 hover:bg-indigo-700 px-10 py-3 text-white text-xl font-bold cursor-pointer transition-colors rounded-md "
+                    >
+                        Volver
+                    </Link>
+                </nav>
+
+                <form
+                    onSubmit={handleSubmit(handleForm)}
+                    className="my-10 bg-white shadow-lg p-10 rounded-lg"
+                    noValidate
+                >
+                    <UserForm
+                        register={register}
+                        errors={errors}
+                        isCreating={false}
+                    />
+                    <input
+                        type="submit"
+                        value="Actualizar usuario"
+                        className="bg-indigo-500 hover:bg-indigo-700 w-full p-3 text-white uppercase font-bold cursor-pointer transition-colors rounded-md "
+                    />
+                </form>
+            </div>
+        </>
+    );
+};
