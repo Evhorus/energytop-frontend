@@ -4,7 +4,7 @@ import { useAppStore } from "../../shared/store/useAppStore";
 
 export const AuthLayout = () => {
     const isAuth = useAppStore((state) => state.isAuth);
-    if (isAuth) return <Navigate to="/dashboard" />;
+    if (isAuth) return <Navigate to="/dashboard/home" />;
     return (
         <div className="min-h-screen bg-gradient-to-br from-indigo-100 via-white to-indigo-200 flex flex-col">
             <Header />

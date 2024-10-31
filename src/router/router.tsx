@@ -32,6 +32,7 @@ export const router = createBrowserRouter([
                     </Suspense>
                 ),
             })),
+            {path: "*", element: <Navigate to="/dashboard/home" replace />}
         ],
     },
 ]);

@@ -53,7 +53,7 @@ export const UpdateUserPage = () => {
         };
         updateUserMutation.mutate(formWithId);
     };
-    if (!userClaimsJwt?.isAdmin) return <Navigate to="/dashboard" />;
+    if (!userClaimsJwt?.isAdmin) return <Navigate to="/dashboard/home" />;
     return (
         <>
             <div className="max-w-3xl mx-auto">
@@ -75,16 +75,18 @@ export const UpdateUserPage = () => {
                     className="my-10 bg-white shadow-lg p-10 rounded-lg"
                     noValidate
                 >
-                    <UserForm
-                        register={register}
-                        errors={errors}
-                        isCreating={false}
-                    />
-                    <input
-                        type="submit"
-                        value="Actualizar usuario"
-                        className="bg-indigo-500 hover:bg-indigo-700 w-full p-3 text-white uppercase font-bold cursor-pointer transition-colors rounded-md "
-                    />
+                    <div className="p-6.5">
+                        <UserForm
+                            register={register}
+                            errors={errors}
+                            isCreating={false}
+                        />
+                        <input
+                            type="submit"
+                            value="Actualizar usuario"
+                            className="bg-indigo-500 hover:bg-indigo-700 w-full p-3 text-white uppercase font-bold cursor-pointer transition-colors rounded-md "
+                        />
+                    </div>
                 </form>
             </div>
         </>

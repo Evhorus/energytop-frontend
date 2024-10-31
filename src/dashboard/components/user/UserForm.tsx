@@ -83,7 +83,7 @@ export const UserForm = ({ register, errors, isCreating }: Props) => {
                 <input
                     id="password"
                     className="w-full p-3  border border-gray-200"
-                    type="text"
+                    type="password"
                     placeholder="Contraseña del usuario"
                     {...register("password", {
                         required: isCreating

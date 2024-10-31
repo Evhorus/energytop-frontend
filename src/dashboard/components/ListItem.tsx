@@ -33,6 +33,8 @@ export const ListItem = ({ user }: Props) => {
     };
 
     return (
+
+        
         <tr className="border-b">
             {userClaimsJwt?.isAdmin}
             <td className="p-4 text-left">
@@ -60,7 +62,7 @@ export const ListItem = ({ user }: Props) => {
             {userClaimsJwt?.isAdmin && (
                 <td className="p-4 text-right">
                     <div className="flex gap-2 justify-end">
-                        <Link to={`/dashboard/update-user/${user.id}`}>
+                        <Link to={`/dashboard/users/update-user/${user.id}`}>
                             <FaRegEdit size={25} />
                         </Link>
                         <button onClick={() => handleDeleteUser(user.id)}>

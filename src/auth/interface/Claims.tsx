@@ -5,7 +5,7 @@ interface Authority {
 export interface Claims {
     authorities: Authority[];
     isAdmin: boolean;
-    username: string;
+    email: string;
     sub: string;
     iat: number;
     exp: number;

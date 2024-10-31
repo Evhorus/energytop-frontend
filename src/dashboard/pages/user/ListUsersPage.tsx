@@ -5,7 +5,7 @@ export const ListUsersPage = () => {
     const userClaimsJwt = useAppStore((state) => state.claims);
     const { users } = useUser();
     return (
-        <div className="relative flex flex-col w-full h-full text-gray-700 bg-white shadow-xl rounded-xl p-2">
+        <div className="relative flex flex-col w-full h-full text-gray-700 bg-white shadow-xl rounded-xl p-2 overflow-y-auto">
             <div className="relative mx-4 mt-4 overflow-hidden bg-white rounded-none">
                 <div className="flex items-center justify-between gap-8 mb-8 mt-4">
                     <h5 className="font-sans text-2xl font-semibold leading-snug text-blue-gray-900">
@@ -27,7 +27,7 @@ export const ListUsersPage = () => {
                     {userClaimsJwt?.isAdmin && (
                         <div className="flex gap-2 sm:flex-row">
                             <Link
-                                to="/dashboard/create-user"
+                                to="/dashboard/users/create-user"
                                 className="flex items-center gap-3 px-4 py-3 text-sm font-bold text-white uppercase bg-indigo-500 rounded-md shadow-md hover:shadow-md focus:opacity-85 active:opacity-95 transition"
                                 type="button"
                             >
@@ -45,8 +45,12 @@ export const ListUsersPage = () => {
                     )}
                 </div>
             </div>
-            <div className="p-6 overflow-hidden">
-                <table className="w-full mt-4 text-left table-auto min-w-max">
+            <div className="overflow-x-auto p-6">
+                {" "}
+                {/* Cambiado a overflow-x-auto */}
+                <table className="w-full mt-4 text-left table-auto min-w-full">
+                    {" "}
+                    {/* Cambiado min-w-max a min-w-full */}
                     <thead>
                         <tr>
                             <th className="p-4 border-y border-blue-gray-100 bg-blue-gray-50/50 text-left">

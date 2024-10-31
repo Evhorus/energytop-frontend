@@ -15,32 +15,52 @@ const NewUserPage = lazy(() =>
         default: module.CreateUserPage,
     }))
 );
+
 const UpdateUserPage = lazy(() =>
     import("../pages/user/UpdateUserPage").then((module) => ({
         default: module.UpdateUserPage,
     }))
 );
-
+const MyAccountPage = lazy(() =>
+    import("../pages/user/MyAccountPage").then((module) => ({
+        default: module.MyAccountPage,
+    }))
+);
+const RenewableEnergiesListPage = lazy(() =>
+    import("../pages/renewable-energies/RenewableEnergiesListPage").then((module) => ({
+        default: module.RenewableEnergiesListPage,
+    }))
+);
 export const routesDashboard = [
     {
-        title: "dashboard",
-        to: "/dashboard",
+        title: "Dashboard",
+        to: "/dashboard/home",
         component: DasboardPage,
     },
     {
-        title: "users",
+        title: "Users",
         to: "/dashboard/users",
         component: ListUsersPage,
     },
     
     {
-        title: "create-user",
-        to: "/dashboard/create-user",
+        title: "Create User",
+        to: "/dashboard/users/create-user",
         component: NewUserPage,
     },
     {
-        title: "update-user",
-        to: "/dashboard/update-user/:id",
+        title: "Update User",
+        to: "/dashboard/users/update-user/:id",
         component: UpdateUserPage,
+    },
+    {
+        title: "Update User",
+        to: "/dashboard/my-account",
+        component: MyAccountPage,
+    },
+    {
+        title: "Renewable Energies",
+        to: "/dashboard/renewable-energies",
+        component: RenewableEnergiesListPage,
     },
 ];
