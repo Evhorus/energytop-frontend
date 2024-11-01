@@ -31,10 +31,7 @@ export const ListItem = ({ user }: Props) => {
             }
         });
     };
-
     return (
-
-        
         <tr className="border-b">
             {userClaimsJwt?.isAdmin}
             <td className="p-4 text-left">

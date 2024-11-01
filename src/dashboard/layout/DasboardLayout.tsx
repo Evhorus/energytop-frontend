@@ -6,7 +6,6 @@ import { useEffect, useState } from "react";
 import Sidebar from "../components/Sidebar/index";
 export default function DasboardLayout() {
     const [sidebarOpen, setSidebarOpen] = useState(false);
-
     const isAuth = useAppStore((state) => state.isAuth);
     const { validateTokenJwtMutation } = useAuthMutation();
     useEffect(() => {
@@ -30,7 +29,7 @@ export default function DasboardLayout() {
                         setSidebarOpen={setSidebarOpen}
                     />
                     <main>
-                        <div className="mx-auto max-w-screen-3xl p-4 md:p-6 2xl:p-10">
+                        <div className="mx-auto max-w-screen-3xl p-4 md:p-6 2xl:p-6">
                             <Outlet />
                         </div>
                     </main>
