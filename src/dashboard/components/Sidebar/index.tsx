@@ -146,7 +146,8 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                                             <NavLink
                                                 to="#"
                                                 className={`group relative flex items-center gap-2.5 rounded-sm px-4 py-2 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 ${
-                                                    (pathname === "/dashboard/users" ||
+                                                    (pathname ===
+                                                        "/dashboard/users" ||
                                                         pathname.includes(
                                                             "/dashboard/users"
                                                         )) &&
@@ -235,8 +236,8 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                             </SidebarLinkGroup>
                             {/* <!-- Menu Item Users --> */}
 
-                             {/* <!-- Menu Item Renewable Energies --> */}
-                             <SidebarLinkGroup
+                            {/* <!-- Menu Item Renewable Energies --> */}
+                            <SidebarLinkGroup
                                 activeCondition={
                                     pathname === "/" ||
                                     pathname.includes("renewable-energies")
@@ -317,15 +318,40 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                                                     <li>
                                                         <NavLink
                                                             to="/dashboard/renewable-energies"
+                                                            end
                                                             className={({
                                                                 isActive,
                                                             }) =>
                                                                 "group relative flex items-center gap-2.5 rounded-md px-4 font-medium text-bodydark2 duration-300 ease-in-out hover:text-white " +
-                                                                (isActive &&
-                                                                    "!text-white")
+                                                                (isActive
+                                                                    ? "!text-white"
+                                                                    : "")
                                                             }
                                                         >
-                                                            Lista De Energias
+                                                            Lista de energias
+                                                        </NavLink>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                            <div
+                                                className={`translate transform overflow-hidden ${
+                                                    !open && "hidden"
+                                                }`}
+                                            >
+                                                <ul className="mt-4 mb-5.5 flex flex-col gap-2.5 pl-6">
+                                                    <li>
+                                                        <NavLink
+                                                            to="/dashboard/renewable-energies/advanced-energy-search"
+                                                            className={({
+                                                                isActive,
+                                                            }) =>
+                                                                "group relative flex items-center gap-2.5 rounded-md px-4 font-medium text-bodydark2 duration-300 ease-in-out hover:text-white " +
+                                                                (isActive
+                                                                    ? "!text-white"
+                                                                    : "")
+                                                            }
+                                                        >
+                                                            Búsqueda avanzada
                                                         </NavLink>
                                                     </li>
                                                 </ul>

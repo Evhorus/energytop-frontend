@@ -31,6 +31,11 @@ const RenewableEnergiesListPage = lazy(() =>
         default: module.RenewableEnergiesListPage,
     }))
 );
+const AdvancedEnergySearchPage = lazy(() =>
+    import("../pages/renewable-energies/AdvancedEnergySearchPage").then((module) => ({
+        default: module.AdvancedEnergySearchPage,
+    }))
+);
 export const routesDashboard = [
     {
         title: "Dashboard",
@@ -62,5 +67,10 @@ export const routesDashboard = [
         title: "Renewable Energies",
         to: "/dashboard/renewable-energies",
         component: RenewableEnergiesListPage,
+    },
+    {
+        title: "AdvancedEnergySearch ",
+        to: "/dashboard/renewable-energies/advanced-energy-search",
+        component: AdvancedEnergySearchPage,
     },
 ];

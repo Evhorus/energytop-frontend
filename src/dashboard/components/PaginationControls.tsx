@@ -12,7 +12,7 @@ export const PaginationControls = ({
     handlePreviousPage,
 }: Props) => {
     return (
-        <div className="flex justify-between items-center p-4">
+        <div className="flex justify-center items-center p-4 gap-5">
             <button
                 onClick={handlePreviousPage}
                 disabled={currentPage === 0}

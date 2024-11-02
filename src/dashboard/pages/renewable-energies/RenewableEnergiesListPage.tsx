@@ -5,11 +5,13 @@ import { PaginationControls } from "../../components/PaginationControls";
 
 export const RenewableEnergiesListPage = () => {
     const [currentPage, setCurrentPage] = useState(0);
-    const { renewableEnergies } = useRenewableEnergy(currentPage);
+    const { renewableEnergies } = useRenewableEnergy({
+        currentPage,
+        listEnergies: true,
+    });
     if (renewableEnergies.isLoading) return <div>Loading...</div>;
     if (!renewableEnergies.data) return null;
-
-    const { size, totalPages, content } = renewableEnergies.data;
+    const { pageSize, totalPages, content } = renewableEnergies.data;
     const handleNextPage = () => {
         if (currentPage < totalPages - 1) {
             setCurrentPage((prev) => prev + 1);
@@ -22,7 +24,7 @@ export const RenewableEnergiesListPage = () => {
     };
     return (
         <div className="relative flex flex-col w-full h-full text-gray-700 bg-white shadow-xl rounded-xl p-2 overflow-y-auto">
-            <div className="relative mx-4 mt-4 overflow-hidden bg-white rounded-none">
+            <div className="relative mx-4 mt-4 overflow-hidden bg-white rounded-none ">
                 <div className="flex items-center justify-between gap-8 mb-8 mt-4">
                     <h5 className="font-sans text-2xl font-semibold leading-snug text-blue-gray-900">
                         Listado de energías renovables
@@ -42,7 +44,7 @@ export const RenewableEnergiesListPage = () => {
                     </div>
                 </div>
             </div>
-            <div className="overflow-x-auto p-6">
+            <div className="overflow-y-auto h-200 sm:h-80 md:h-96 lg:h-[30rem] xl:h-[45rem] p-4">
                 <table className="w-full mt-4 text-left table-auto min-w-full">
                     <thead>
                         <tr>
@@ -83,7 +85,7 @@ export const RenewableEnergiesListPage = () => {
                             <ListItemRenewableEnergies
                                 key={renewableEnergy.id}
                                 renewableEnergies={renewableEnergy}
-                                index={index + currentPage * size + 1}
+                                index={index + currentPage * pageSize + 1}
                             />
                         ))}
                     </tbody>

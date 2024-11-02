@@ -1,0 +1,182 @@
+import { useEffect, useState } from "react";
+import { useForm } from "react-hook-form";
+import { AdvancedEnergySearchFormInputs } from "../../interfaces/advanced-energy-search-inputs.interface";
+import { useRenewableEnergy } from "../../hooks/renewable-energy/useRenewableEnergy";
+import { CiSearch } from "react-icons/ci";
+
+export const EnergyTypeYearSearchForm = () => {
+    const [isButtonVisible, setButtonVisible] = useState(false);
+    const [fadeIn, setFadeIn] = useState(false);
+    const { energyTypes } = useRenewableEnergy({});
+    const currentYear = new Date().getFullYear();
+    const years = Array.from(
+        { length: currentYear - 2015 + 1 },
+        (_, i) => 2015 + i
+    );
+
+    const [searchParams, setSearchParams] = useState({
+        energyTypeName: "",
+        year: 2015,
+    });
+
+    const { register, handleSubmit, watch } =
+        useForm<AdvancedEnergySearchFormInputs>({
+            defaultValues: {
+                energyTypeName: "",
+                year: 2015,
+            },
+        });
+    const selectedEnergyType = watch("energyTypeName");
+
+    useEffect(() => {
+        if (selectedEnergyType) {
+            setButtonVisible(true);
+            setTimeout(() => setFadeIn(true), 50); // Inicia la animación después de que se muestra el botón
+        } else {
+            setFadeIn(false);
+            setTimeout(() => setButtonVisible(false), 300); // Oculta el botón después de la animación
+        }
+    }, [selectedEnergyType]);
+
+    const { totalRenewableEnergy } = useRenewableEnergy({
+        energyBySourceAndCountry: searchParams,
+    });
+
+    const onSearchByEnergyTypeNameAndYear = (
+        formData: AdvancedEnergySearchFormInputs
+    ) => {
+        const { energyTypeName, year } = formData;
+        if (energyTypeName && year) {
+            setSearchParams({ energyTypeName, year });
+        }
+    };
+    return (
+        <>
+            <div className="bg-gray-50 shadow-md rounded-lg p-6">
+                <h2 className="text-xl font-bold text-gray-700 mb-4">
+                    Buscar Producción Total
+                </h2>
+                <form
+                    onSubmit={handleSubmit(onSearchByEnergyTypeNameAndYear)}
+                    className="space-y-4"
+                >
+                    <div className="flex flex-col md:flex-row md:items-end md:space-x-4">
+                        <div className="flex-1 mb-4 md:mb-0">
+                            <label className="block text-gray-600 font-medium mb-1">
+                                Tipo de Fuente
+                            </label>
+                            <select
+                                {...register("energyTypeName")}
+                                className="w-full p-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                            >
+                                <option value="">Selecciona...</option>
+                                {energyTypes.data?.map((source) => (
+                                    <option
+                                        key={source.id}
+                                        value={source.energyName}
+                                    >
+                                        {source.energyName}
+                                    </option>
+                                ))}
+                            </select>
+                        </div>
+                        <div className="flex-1 mb-4 md:mb-0">
+                            <label className="block text-gray-600 font-medium mb-1">
+                                Año
+                            </label>
+                            <select
+                                {...register("year")}
+                                className="w-full p-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                            >
+                                <option value="">Selecciona...</option>
+                                {years.map((year) => (
+                                    <option key={year} value={year}>
+                                        {year}
+                                    </option>
+                                ))}
+                            </select>
+                        </div>
+                        {isButtonVisible && ( // Solo mostrar el botón si isButtonVisible es verdadero
+                            <div
+                                className={`mt-4 md:mt-0 transition-all duration-300 ${
+                                    fadeIn
+                                        ? "opacity-100 translate-y-0"
+                                        : "opacity-0 translate-y-2"
+                                }`}
+                            >
+                                <button
+                                    type="submit"
+                                    className="flex items-center p-2 justify-center bg-blue-600 text-white hover:bg-blue-700 rounded-lg transition duration-300 transform scale-100 hover:scale-105"
+                                    aria-label="Buscar"
+                                >
+                                    <CiSearch size={25} /> Buscar
+                                </button>
+                            </div>
+                        )}
+                    </div>
+                </form>
+            </div>
+
+            {/* Tabla de Resultados */}
+            {totalRenewableEnergy.data &&
+                totalRenewableEnergy.data.length > 0 && (
+                    <div className="mt-8 max-w-full mx-auto bg-white shadow-lg rounded-lg overflow-hidden">
+                        <h2 className="text-xl font-bold text-gray-800 px-6 py-4 border-b border-gray-200">
+                            Resultados de Energía Renovable
+                        </h2>
+                        <div className="overflow-x-auto">
+                            {" "}
+                            {/* Contenedor para permitir el desplazamiento horizontal */}
+                            <table className="min-w-full bg-white">
+                                <thead className="bg-gray-200 border-b border-gray-300">
+                                    <tr>
+                                        <th className="px-6 py-3 text-left text-gray-700 font-semibold uppercase tracking-wider">
+                                            País
+                                        </th>
+                                        <th className="px-6 py-3 text-left text-gray-700 font-semibold uppercase tracking-wider">
+                                            Tipo de Energía
+                                        </th>
+                                        <th className="px-6 py-3 text-left text-gray-700 font-semibold uppercase tracking-wider">
+                                            Año
+                                        </th>
+                                        <th className="px-6 py-3 text-left text-gray-700 font-semibold uppercase tracking-wider">
+                                            Producción Total
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {totalRenewableEnergy.data.map(
+                                        (item, index) => (
+                                            <tr
+                                                key={index}
+                                                className={`${
+                                                    index % 2 === 0
+                                                        ? "bg-white"
+                                                        : "bg-gray-50"
+                                                } hover:bg-gray-100 transition duration-300`}
+                                            >
+                                                <td className="px-6 py-4 text-gray-800 border-b border-gray-200">
+                                                    {item.country}
+                                                </td>
+                                                <td className="px-6 py-4 text-gray-800 border-b border-gray-200">
+                                                    {item.energyType}
+                                                </td>
+                                                <td className="px-6 py-4 text-gray-800 border-b border-gray-200">
+                                                    {item.year}
+                                                </td>
+                                                <td className="px-6 py-4 text-gray-800 border-b border-gray-200 font-medium">
+                                                    {item.totalProduction.toFixed(
+                                                        2
+                                                    )}
+                                                </td>
+                                            </tr>
+                                        )
+                                    )}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                )}
+        </>
+    );
+};
