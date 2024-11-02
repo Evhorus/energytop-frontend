@@ -131,6 +131,9 @@ export const EnergyTypeYearSearchForm = () => {
                                 <thead className="bg-gray-200 border-b border-gray-300">
                                     <tr>
                                         <th className="px-6 py-3 text-left text-gray-700 font-semibold uppercase tracking-wider">
+                                            #
+                                        </th>
+                                        <th className="px-6 py-3 text-left text-gray-700 font-semibold uppercase tracking-wider">
                                             País
                                         </th>
                                         <th className="px-6 py-3 text-left text-gray-700 font-semibold uppercase tracking-wider">
@@ -155,6 +158,9 @@ export const EnergyTypeYearSearchForm = () => {
                                                         : "bg-gray-50"
                                                 } hover:bg-gray-100 transition duration-300`}
                                             >
+                                                <td className="px-6 py-4 text-gray-800 border-b border-gray-200">
+                                                    {index + 1}
+                                                </td>
                                                 <td className="px-6 py-4 text-gray-800 border-b border-gray-200">
                                                     {item.country}
                                                 </td>
