@@ -1,13 +1,12 @@
-import { Link, Navigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { UserFormInputs } from "../../../shared/interfaces/user.interface";
 import { UserForm } from "../../components/user/UserForm";
 import { useUserMutation } from "../../";
-import { useAppStore } from "../../../shared/store/useAppStore";
-
 export const CreateUserPage = () => {
-    const userClaimsJwt = useAppStore((state) => state.claims);
-    const { createUserMutation } = useUserMutation();
+    const { createUserMutation } = useUserMutation({
+        redirect: "/dashboard/users",
+    });
     const initialValues: UserFormInputs = {
         firstName: "",
         lastName: "",
@@ -25,8 +24,6 @@ export const CreateUserPage = () => {
 
     const handleForm = (formData: UserFormInputs) =>
         createUserMutation.mutate(formData);
-
-    if (!userClaimsJwt?.isAdmin) return <Navigate to="/dashboard" />;
     return (
         <>
             <div className="max-w-3xl mx-auto">
@@ -52,6 +49,7 @@ export const CreateUserPage = () => {
                         register={register}
                         errors={errors}
                         isCreating={true}
+                        showFieldEmail={true}
                     />
                     <input
                         type="submit"

@@ -44,9 +44,9 @@ export const findAllUsers = async () => {
         }
     }
 };
-export const findUserById = async (id: UserResponse["id"]) => {
+export const findUserById = async (identifier: UserResponse["id"] | UserResponse["email"]) => {
     try {
-        const { data } = await httpClient.get<UserResponse>(`${URL}/${id}`);
+        const { data } = await httpClient.get<UserResponse>(`${URL}/${identifier}`);
         return data;
     } catch (error) {
         if (isAxiosError(error) && error.response) {

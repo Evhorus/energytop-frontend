@@ -1,38 +1,40 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { useNavigate } from "react-router-dom";
 import { userService } from "../..";
-import withReactContent from "sweetalert2-react-content";
-import Swal from "sweetalert2";
+import { showNotification } from "../../components/Notification";
+import { useNavigate } from "react-router-dom";
+import { UserResponse } from "../../../shared/interfaces/user.interface";
 
-export const useUserMutation = (idUser?: number) => {
-    const MySwal = withReactContent(Swal);
+interface Options {
+    redirect?: string;
+    identifier?: UserResponse["id"] | UserResponse["email"];
+}
+
+export const useUserMutation = ({ redirect, identifier }: Options) => {
     const navigate = useNavigate();
-    const dashboad = "/dashboard/users";
     const queryClient = useQueryClient();
-
     const createUserMutation = useMutation({
         mutationFn: userService.createUser,
         onError: (error: Error) => {
-            console.log(error);
-            MySwal.fire({
+            showNotification({
                 title: "Error",
                 text: error.message,
                 icon: "error",
-                confirmButtonText: "Cerrar",
+                showConfirmButton: false,
             });
         },
         onSuccess: () => {
             queryClient.invalidateQueries({
                 queryKey: ["users"],
             });
-            MySwal.fire({
+            showNotification({
                 title: "¡Éxito!",
                 text: "Usuario creado con éxito.",
                 icon: "success",
                 showConfirmButton: false,
                 timer: 1500,
-            }).then(() => {
-                navigate(dashboad);
+                onClose: () => {
+                    navigate(redirect!);
+                },
             });
         },
     });
@@ -40,43 +42,48 @@ export const useUserMutation = (idUser?: number) => {
     const updateUserMutation = useMutation({
         mutationFn: userService.updateUser,
         onError: (error: Error) => {
-            MySwal.fire({
+            showNotification({
                 title: "Error",
                 text: error.message,
                 icon: "error",
-                confirmButtonText: "Cerrar",
-            });
-        },
-        onSuccess: () => {
-            queryClient.invalidateQueries({
-                queryKey: ["users", idUser],
-            });
-            MySwal.fire({
-                title: "¡Éxito!",
-                text: "Usuario actualizado con éxito.",
-                icon: "success",
                 showConfirmButton: false,
-                timer: 1500,
-            }).then(() => {
-                navigate(dashboad);
-            });
-        },
-    });
-    const deleteUserMutation = useMutation({
-        mutationFn: userService.deleteUser,
-        onError: (error: Error) => {
-            MySwal.fire({
-                title: "Error",
-                text: error.message,
-                icon: "error",
-                confirmButtonText: "Cerrar",
             });
         },
         onSuccess: () => {
             queryClient.invalidateQueries({
                 queryKey: ["users"],
             });
-            MySwal.fire({
+            queryClient.invalidateQueries({
+                queryKey: ["user", identifier],
+            });
+            showNotification({
+                title: "¡Éxito!",
+                text: "Usuario actualizado con éxito.",
+                icon: "success",
+                showConfirmButton: false,
+                timer: 1500,
+                onClose: () => {
+                    navigate(redirect!);
+                },
+            });
+        },
+    });
+
+    const deleteUserMutation = useMutation({
+        mutationFn: userService.deleteUser,
+        onError: (error: Error) => {
+            showNotification({
+                title: "Error",
+                text: error.message,
+                icon: "error",
+                showConfirmButton: false,
+            });
+        },
+        onSuccess: () => {
+            queryClient.invalidateQueries({
+                queryKey: ["users"],
+            });
+            showNotification({
                 title: "¡Éxito!",
                 text: "Usuario eliminado con éxito.",
                 icon: "success",

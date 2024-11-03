@@ -1,4 +1,56 @@
+import { useForm } from "react-hook-form";
+import { useAppStore } from "../../../shared";
+import { UserFormInputs } from "../../../shared/interfaces/user.interface";
+import { useUser } from "../../hooks/user/useUsers";
+import { useUserMutation } from "../../hooks/user/useUsersMutation";
+import { useEffect } from "react";
+import { UserForm } from "../../components/user/UserForm";
+
 export const MyAccountPage = () => {
+    const claims = useAppStore((state) => state.claims);
+    const { user } = useUser(claims?.email!);
+    const { updateUserMutation } = useUserMutation({
+        redirect: "/dashboard/home",
+        identifier: claims?.email!,
+    });
+
+    const {
+        register,
+        handleSubmit,
+        reset,
+        formState: { errors },
+    } = useForm<UserFormInputs>({
+        defaultValues: {
+            firstName: "",
+            lastName: "",
+            email: "",
+            password: "",
+        },
+    });
+
+    useEffect(() => {
+        if (user.data) {
+            reset({
+                firstName: user.data.firstName,
+                lastName: user.data.lastName || "",
+                email: user.data.email || "",
+                password: "",
+            });
+        }
+    }, [user.data, reset]);
+
+    const handleForm = (formData: UserFormInputs) => {
+        const { password, ...rest } = formData;
+        const formWithId = {
+            idUser: user.data?.id!,
+            formData: {
+                ...rest,
+                password: password ? password : null,
+            },
+        };
+        updateUserMutation.mutate(formWithId);
+    };
+    if (user.isLoading) return <p>Loading...</p>;
     return (
         <>
             <div className="mx-auto max-w-3xl g">
@@ -8,93 +60,20 @@ export const MyAccountPage = () => {
                 </p>
 
                 <form
-                    // onSubmit={handleSubmit(handleEditProfile)}
-                    className=" mt-14 space-y-5  bg-white shadow-lg p-10 rounded-l"
+                    onSubmit={handleSubmit(handleForm)}
+                    className="my-10 bg-white shadow-lg p-10 rounded-lg"
                     noValidate
                 >
-                    <div className="mb-5 space-y-3">
-                        <label
-                            className="text-sm uppercase font-bold"
-                            htmlFor="name"
-                        >
-                            Nombre
-                        </label>
-                        <input
-                            id="name"
-                            type="text"
-                            placeholder="Tu Nombre"
-                            className="w-full p-3  border border-gray-200"
-                            // {...register("name", {
-                            //   required: "Nombre de usuario es obligatoro",
-                            // })}
-                        />
-                        {/* {errors.name && <ErrorMessage>{errors.name.message}</ErrorMessage>} */}
-                    </div>
-                    <div className="mb-5 space-y-3">
-                        <label
-                            className="text-sm uppercase font-bold"
-                            htmlFor="name"
-                        >
-                            Apellido
-                        </label>
-                        <input
-                            id="name"
-                            type="text"
-                            placeholder="Tu Apellido"
-                            className="w-full p-3  border border-gray-200"
-                            // {...register("name", {
-                            //   required: "Nombre de usuario es obligatoro",
-                            // })}
-                        />
-                        {/* {errors.name && <ErrorMessage>{errors.name.message}</ErrorMessage>} */}
-                    </div>
-
-                    <div className="mb-5 space-y-3">
-                        <label
-                            className="text-sm uppercase font-bold"
-                            htmlFor="password"
-                        >
-                            Correo electrónico
-                        </label>
-                        <input
-                            id="text"
-                            type="email"
-                            placeholder="Tu Correo electrónico"
-                            className="w-full p-3  border border-gray-200"
-                            // {...register("email", {
-                            //   required: "EL e-mail es obligatorio",
-                            //   pattern: {
-                            //     value: /\S+@\S+\.\S+/,
-                            //     message: "E-mail no válido",
-                            //   },
-                            // })}
-                        />
-                        {/* {errors.email && (
-              <ErrorMessage>{errors.email.message}</ErrorMessage>
-            )} */}
-                    </div>
-                    <div className="mb-5 space-y-3">
-                        <label
-                            className="text-sm uppercase font-bold"
-                            htmlFor="name"
-                        >
-                            Contraseña
-                        </label>
-                        <input
-                            id="name"
-                            type="password"
-                            placeholder="Tu Contraseña"
-                            className="w-full p-3  border border-gray-200"
-                            // {...register("name", {
-                            //   required: "Nombre de usuario es obligatoro",
-                            // })}
-                        />
-                        {/* {errors.name && <ErrorMessage>{errors.name.message}</ErrorMessage>} */}
-                    </div>
+                    <UserForm
+                        register={register}
+                        errors={errors}
+                        isCreating={false}
+                        showFieldEmail={false}
+                    />
                     <input
                         type="submit"
-                        value="Guardar Cambios"
-                        className="bg-indigo-500 w-full p-3 text-white uppercase font-bold hover:bg-indigo-700 cursor-pointer transition-colors"
+                        value="Actualizar usuario"
+                        className="bg-indigo-500 hover:bg-indigo-700 w-full p-3 text-white uppercase font-bold cursor-pointer transition-colors rounded-md "
                     />
                 </form>
             </div>

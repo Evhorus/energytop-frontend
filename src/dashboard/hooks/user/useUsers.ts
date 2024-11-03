@@ -1,7 +1,10 @@
 import { useQuery } from "@tanstack/react-query";
 import { userService } from "../..";
+import { UserResponse } from "../../../shared/interfaces/user.interface";
 
-export const useUser = (id?: number) => {
+export const useUser = (
+    identifier?: UserResponse["id"] | UserResponse["email"]
+) => {
     const users = useQuery({
         queryKey: ["users"],
         queryFn: userService.findAllUsers,
@@ -10,10 +13,10 @@ export const useUser = (id?: number) => {
     });
 
     const user = useQuery({
-        queryKey: ["user"],
-        queryFn: () => userService.findUserById(id!),
+        queryKey: ["user", identifier],
+        queryFn: () => userService.findUserById(identifier!),
         retry: 1,
-        enabled: !!id,
+        enabled: !!identifier,
         refetchOnWindowFocus: false,
     });
 

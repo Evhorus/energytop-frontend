@@ -11,8 +11,12 @@ export const UpdateUserPage = () => {
     const params = useParams();
     const idUser = +params.id!;
     const { user } = useUser(idUser);
-    const { updateUserMutation } = useUserMutation(idUser);
+    const { updateUserMutation } = useUserMutation({
+        redirect: "/dashboard/users",
+        identifier: user.data?.id,
+    });
 
+ 
     const {
         register,
         handleSubmit,
@@ -29,18 +33,14 @@ export const UpdateUserPage = () => {
 
     useEffect(() => {
         if (user.data) {
-            // Actualiza el formulario con los datos del usuario cuando estén listos
             reset({
                 firstName: user.data.firstName,
                 lastName: user.data.lastName || "",
                 email: user.data.email || "",
-                password: "", // No incluimos la contraseña por seguridad
+                password: "",
             });
         }
     }, [user.data, reset]);
-
-    // Muestra un loading mientras los datos están cargando
-    if (user.isLoading) return <p>Loading...</p>;
 
     const handleForm = (formData: UserFormInputs) => {
         const { password, ...rest } = formData;
@@ -53,6 +53,8 @@ export const UpdateUserPage = () => {
         };
         updateUserMutation.mutate(formWithId);
     };
+
+    if (user.isLoading) return <p>Loading...</p>;
     if (!userClaimsJwt?.isAdmin) return <Navigate to="/dashboard/home" />;
     return (
         <>
@@ -80,6 +82,7 @@ export const UpdateUserPage = () => {
                             register={register}
                             errors={errors}
                             isCreating={false}
+                            showFieldEmail={true}
                         />
                         <input
                             type="submit"

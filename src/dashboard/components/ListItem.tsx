@@ -2,10 +2,10 @@ import { FaRegEdit } from "react-icons/fa";
 import { RiDeleteBin5Line } from "react-icons/ri";
 import { UserResponse } from "../../shared/interfaces/user.interface";
 import { useUserMutation } from "../";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useAppStore } from "../../shared/store/useAppStore";
-import withReactContent from "sweetalert2-react-content";
-import Swal from "sweetalert2";
+import { showNotification } from "./Notification";
+import { useEffect } from "react";
 
 type Props = {
     user: UserResponse;
@@ -13,24 +13,23 @@ type Props = {
 
 export const ListItem = ({ user }: Props) => {
     const userClaimsJwt = useAppStore((state) => state.claims);
-    const MySwal = withReactContent(Swal);
-
-    const { deleteUserMutation } = useUserMutation();
+    const { deleteUserMutation } = useUserMutation({});
     const handleDeleteUser = (userId: UserResponse["id"]) => {
-        MySwal.fire({
+        showNotification({
             title: "¿Estás seguro?",
             text: "¡No podrás revertir esto!",
             icon: "warning",
-            showCancelButton: true,
+            confirmButtonText: "Sí, ¡elimínalo!",
             confirmButtonColor: "#3085d6",
+            cancelButtonText: "Cancelar",
             cancelButtonColor: "#d33",
-            confirmButtonText: "Sí, ¡elimínalo!"
-        }).then((result) => {
-            if (result.isConfirmed) {
+            showCancelButton: true,
+            onConfirm: () => {
                 deleteUserMutation.mutate(userId);
-            }
+            },
         });
     };
+
     return (
         <tr className="border-b">
             {userClaimsJwt?.isAdmin}

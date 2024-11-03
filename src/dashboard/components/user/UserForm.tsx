@@ -6,9 +6,15 @@ type Props = {
     register: UseFormRegister<UserFormInputs>;
     errors: FieldErrors<UserFormInputs>;
     isCreating: boolean;
+    showFieldEmail?: boolean;
 };
 
-export const UserForm = ({ register, errors, isCreating }: Props) => {
+export const UserForm = ({
+    register,
+    errors,
+    isCreating,
+    showFieldEmail,
+}: Props) => {
     return (
         <>
             <div className="mb-5 space-y-3">
@@ -54,29 +60,33 @@ export const UserForm = ({ register, errors, isCreating }: Props) => {
                     <ErrorMessage>{errors.lastName.message}</ErrorMessage>
                 )}
             </div>
+            {showFieldEmail && (
+                <div className="mb-5 space-y-3">
+                    <label
+                        htmlFor="email"
+                        className="text-sm uppercase font-bold"
+                    >
+                        Correo electrónico
+                    </label>
+                    <input
+                        id="email"
+                        className="w-full p-3 border border-gray-200"
+                        type="text"
+                        placeholder="Correo electrónico del usuario"
+                        {...register("email", {
+                            required: "El Email es obligatorio",
+                            pattern: {
+                                value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+                                message: "El formato del Email es inválido",
+                            },
+                        })}
+                    />
 
-            <div className="mb-5 space-y-3">
-                <label htmlFor="email" className="text-sm uppercase font-bold">
-                    Correo electrónico
-                </label>
-                <input
-                    id="email"
-                    className="w-full p-3 border border-gray-200"
-                    type="text"
-                    placeholder="Correo electrónico del usuario"
-                    {...register("email", {
-                        required: "El Email es obligatorio",
-                        pattern: {
-                            value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
-                            message: "El formato del Email es inválido",
-                        },
-                    })}
-                />
-
-                {errors.email && (
-                    <ErrorMessage>{errors.email.message}</ErrorMessage>
-                )}
-            </div>
+                    {errors.email && (
+                        <ErrorMessage>{errors.email.message}</ErrorMessage>
+                    )}
+                </div>
+            )}
             <div className="mb-5 space-y-3">
                 <label
                     htmlFor="password"
