@@ -13,6 +13,7 @@ export const useUserMutation = (idUser?: number) => {
     const createUserMutation = useMutation({
         mutationFn: userService.createUser,
         onError: (error: Error) => {
+            console.log(error);
             MySwal.fire({
                 title: "Error",
                 text: error.message,

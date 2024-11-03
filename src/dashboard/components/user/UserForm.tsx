@@ -61,11 +61,15 @@ export const UserForm = ({ register, errors, isCreating }: Props) => {
                 </label>
                 <input
                     id="email"
-                    className="w-full p-3  border border-gray-200"
+                    className="w-full p-3 border border-gray-200"
                     type="text"
                     placeholder="Correo electrónico del usuario"
                     {...register("email", {
                         required: "El Email es obligatorio",
+                        pattern: {
+                            value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+                            message: "El formato del Email es inválido",
+                        },
                     })}
                 />
 
