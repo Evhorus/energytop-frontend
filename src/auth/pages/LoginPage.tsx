@@ -19,8 +19,8 @@ export const LoginPage = () => {
     const handleForm = (userFormLogin: UserFormLogin) =>
         loginUserMutation.mutate(userFormLogin);
     return (
-        <div className="flex flex-1 items-center justify-center px-6 py-12 lg:px-8">
-            <div className="bg-white p-8 py-15 rounded-md shadow-xl max-w-md w-full space-y-8">
+        <div className="flex flex-1 items-center justify-center px-6 py-12 lg:px-8 ">
+            <div className="bg-white p-8 py-15 rounded-md shadow-xl max-w-md w-full space-y-8 dark:border-strokedark">
                 <div className="text-center">
                     <img
                         className="mx-auto h-36 w-auto"
