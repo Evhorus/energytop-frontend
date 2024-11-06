@@ -66,7 +66,7 @@ export const UpdateUserPage = () => {
                 <nav className="my-5">
                     <Link
                         to="/dashboard/users"
-                        className="bg-indigo-500 hover:bg-indigo-700 px-10 py-3 text-white text-xl font-bold cursor-pointer transition-colors rounded-md "
+                        className="bg-slate-600 hover:bg-slate-800 px-10 py-3 text-white text-xl font-bold cursor-pointer transition-colors rounded-md "
                     >
                         Volver
                     </Link>
@@ -87,7 +87,7 @@ export const UpdateUserPage = () => {
                         <input
                             type="submit"
                             value="Actualizar usuario"
-                            className="bg-indigo-500 hover:bg-indigo-700 w-full p-3 text-white uppercase font-bold cursor-pointer transition-colors rounded-md "
+                            className="bg-green-600 hover:bg-green-700  w-full p-3 text-white uppercase font-bold cursor-pointer transition-colors rounded-md "
                         />
                     </div>
                 </form>

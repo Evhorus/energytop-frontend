@@ -3,11 +3,14 @@ import { useForm } from "react-hook-form";
 import { AdvancedEnergySearchFormInputs } from "../../interfaces/advanced-energy-search-inputs.interface";
 import { useRenewableEnergy } from "../../hooks/renewable-energy/useRenewableEnergy";
 import { CiSearch } from "react-icons/ci";
+import { useEnergyTypes } from "../../hooks/energy-types/useEnergyTypes";
 
 export const EnergyTypeYearSearchForm = () => {
     const [isButtonVisible, setButtonVisible] = useState(false);
     const [fadeIn, setFadeIn] = useState(false);
-    const { energyTypes } = useRenewableEnergy({});
+    const { energyTypes } = useEnergyTypes({currentPage: 0});
+
+    console.log(energyTypes.data)
     const currentYear = new Date().getFullYear();
     const years = Array.from(
         { length: currentYear - 2015 + 1 },
@@ -70,7 +73,7 @@ export const EnergyTypeYearSearchForm = () => {
                                 className="w-full p-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                             >
                                 <option value="">Selecciona...</option>
-                                {energyTypes.data?.map((source) => (
+                                {energyTypes.data?.content.map((source) => (
                                     <option
                                         key={source.id}
                                         value={source.energyName}

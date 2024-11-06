@@ -41,19 +41,5 @@ export const useRenewableEnergy = ({
         refetchOnWindowFocus: false,
     });
 
-    const countries = useQuery({
-        queryKey: ["countries"],
-        queryFn: () => renewableEnergyService.getCountries(),
-        retry: 1,
-        refetchOnWindowFocus: false,
-    });
-
-    const energyTypes = useQuery({
-        queryKey: ["energyTypes"],
-        queryFn: () => renewableEnergyService.getEnergyTypes(),
-        retry: 1,
-        refetchOnWindowFocus: false,
-    });
-
-    return { renewableEnergies, countries, energyTypes, totalRenewableEnergy };
+    return { renewableEnergies, totalRenewableEnergy };
 };

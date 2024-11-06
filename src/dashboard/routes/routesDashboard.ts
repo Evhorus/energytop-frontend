@@ -26,15 +26,77 @@ const MyAccountPage = lazy(() =>
         default: module.MyAccountPage,
     }))
 );
-const RenewableEnergiesListPage = lazy(() =>
-    import("../pages/renewable-energies/RenewableEnergiesListPage").then((module) => ({
-        default: module.RenewableEnergiesListPage,
-    }))
-);
+
 const AdvancedEnergySearchPage = lazy(() =>
-    import("../pages/renewable-energies/AdvancedEnergySearchPage").then((module) => ({
+    import("../pages/energy-data/AdvancedEnergySearchPage").then((module) => ({
         default: module.AdvancedEnergySearchPage,
     }))
+);
+
+const RenewableEnergyListPage = lazy(() =>
+    import(
+        "../pages/energy-management/renewable-energy/RenewableEnergyListPage"
+    ).then((module) => ({
+        default: module.RenewableEnergyListPage,
+    }))
+);
+const CreateRenewableEnergyPage = lazy(() =>
+    import(
+        "../pages/energy-management/renewable-energy/CreateRenewableEnergyPage"
+    ).then((module) => ({
+        default: module.CreateRenewableEnergyPage,
+    }))
+);
+const UpdateRenewableEnergyPage = lazy(() =>
+    import(
+        "../pages/energy-management/renewable-energy/UpdateRenewableEnergyPage"
+    ).then((module) => ({
+        default: module.UpdateRenewableEnergyPage,
+    }))
+);
+
+
+const EnergyTypesListPage = lazy(() =>
+    import("../pages/energy-management/energy-types/EnergyTypesListPage").then(
+        (module) => ({
+            default: module.EnergyTypesListPage,
+        })
+    )
+);
+const CreateEnergyTypePage = lazy(() =>
+    import("../pages/energy-management/energy-types/CreateEnergyTypePage").then(
+        (module) => ({
+            default: module.CreateEnergyTypePage,
+        })
+    )
+);
+const UpdateEnergyTypePage = lazy(() =>
+    import("../pages/energy-management/energy-types/UpdateEnergyTypePage").then(
+        (module) => ({
+            default: module.UpdateEnergyTypePage,
+        })
+    )
+);
+const CountriesListPage = lazy(() =>
+    import("../pages/energy-management/countries/CountriesListPage").then(
+        (module) => ({
+            default: module.CountriesListPage,
+        })
+    )
+);
+const CreateCountryPage = lazy(() =>
+    import("../pages/energy-management/countries/CreateCountryPage").then(
+        (module) => ({
+            default: module.CreateCountryPage,
+        })
+    )
+);
+const UpdateCountryPage = lazy(() =>
+    import("../pages/energy-management/countries/UpdateCountryPage").then(
+        (module) => ({
+            default: module.UpdateCountryPage,
+        })
+    )
 );
 export const routesDashboard = [
     {
@@ -47,7 +109,7 @@ export const routesDashboard = [
         to: "/dashboard/users",
         component: ListUsersPage,
     },
-    
+
     {
         title: "Create User",
         to: "/dashboard/users/create-user",
@@ -63,14 +125,55 @@ export const routesDashboard = [
         to: "/dashboard/my-account",
         component: MyAccountPage,
     },
+
     {
-        title: "Renewable Energies",
-        to: "/dashboard/renewable-energies",
-        component: RenewableEnergiesListPage,
+        title: "Advanced EnergySearch",
+        to: "/dashboard/energy-data/advanced-energy-search",
+        component: AdvancedEnergySearchPage,
     },
     {
-        title: "AdvancedEnergySearch ",
-        to: "/dashboard/renewable-energies/advanced-energy-search",
-        component: AdvancedEnergySearchPage,
+        title: "Renewable Energies",
+        to: "/dashboard/energy-management/renewable-energy",
+        component: RenewableEnergyListPage,
+    },
+    {
+        title: "Renewable Energies",
+        to: "/dashboard/energy-management/renewable-energy/create-renewable-energy",
+        component: CreateRenewableEnergyPage,
+    },
+    {
+        title: "Renewable Energies",
+        to: "/dashboard/energy-management/renewable-energy/update-renewable-energy/:id",
+        component: UpdateRenewableEnergyPage,
+    },
+    {
+        title: "Energy Types List",
+        to: "/dashboard/energy-management/energy-types",
+        component: EnergyTypesListPage,
+    },
+    {
+        title: "Create Energy Type",
+        to: "/dashboard/energy-management/energy-types/create-energy-type",
+        component: CreateEnergyTypePage,
+    },
+    {
+        title: "Update Energy Type",
+        to: "/dashboard/energy-management/energy-types/update-energy-type/:id",
+        component: UpdateEnergyTypePage,
+    },
+    {
+        title: "Countries List",
+        to: "/dashboard/energy-management/countries",
+        component: CountriesListPage,
+    },
+    {
+        title: "Create Country",
+        to: "/dashboard/energy-management/countries/create-country",
+        component: CreateCountryPage,
+    },
+    {
+        title: "Update Country",
+        to: "/dashboard/energy-management/countries/update-country/:id",
+        component: UpdateCountryPage,
     },
 ];

@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { EnergyTypeYearSearchForm } from "../../components/RenewableEnergies/EnergyTypeYearSearchForm";
+import { EnergyTypeYearSearchForm } from "../../components/RenewableEnergy/EnergyTypeYearSearchForm";
 export const AdvancedEnergySearchPage = () => {
     const [selectedAction, setSelectedAction] = useState<string>("");
     const options = [
@@ -53,7 +53,6 @@ export const AdvancedEnergySearchPage = () => {
 
                 {selectedAction === "totalProductionBySourceAndYear" && (
                     <EnergyTypeYearSearchForm />
-                   
                 )}
 
             </div>

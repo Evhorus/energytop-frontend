@@ -1,16 +1,36 @@
+import { useState } from "react";
+import { useEnergyTypes } from "../../../hooks/energy-types/useEnergyTypes";
+import { PaginationControls } from "../../../components/PaginationControls";
+import { ListItemEnergyTypes } from "../../../components/EnergyTypes/ListItemEnergyTypes";
+import { useAppStore } from "../../../../shared";
 import { Link } from "react-router-dom";
-import { ListItemUsers, useUser } from "../../";
-import { useAppStore } from "../../../shared/store/useAppStore";
-export const ListUsersPage = () => {
+import { IoAddOutline } from "react-icons/io5";
+
+export const EnergyTypesListPage = () => {
     const userClaimsJwt = useAppStore((state) => state.claims);
-    const { users } = useUser();
-    if (users.isLoading) return <div>Loading...</div>;
+    const [currentPage, setCurrentPage] = useState(0);
+    const { energyTypes } = useEnergyTypes({
+        currentPage,
+    });
+    if (energyTypes.isLoading) return <div>Loading...</div>;
+    if (!energyTypes.data) return null;
+    const { pageSize, totalPages, content } = energyTypes.data;
+    const handleNextPage = () => {
+        if (currentPage < totalPages - 1) {
+            setCurrentPage((prev) => prev + 1);
+        }
+    };
+    const handlePreviousPage = () => {
+        if (currentPage > 0) {
+            setCurrentPage((prev) => prev - 1);
+        }
+    };
     return (
         <div className="relative flex flex-col w-full h-full text-gray-700 bg-white shadow-xl rounded-xl p-2 overflow-y-auto">
-            <div className="relative mx-4 mt-4 overflow-hidden bg-white rounded-none">
+            <div className="relative mx-4 mt-4 overflow-hidden bg-white rounded-none ">
                 <div className="flex items-center justify-between gap-8 mb-8 mt-4">
                     <h5 className="font-sans text-2xl font-semibold leading-snug text-blue-gray-900">
-                        Listado de usuarios
+                        Listado tipos de energías renovables
                     </h5>
                 </div>
                 <div className="flex items-center justify-between gap-4 md:flex-row">
@@ -28,19 +48,12 @@ export const ListUsersPage = () => {
                     {userClaimsJwt?.isAdmin && (
                         <div className="flex gap-2 sm:flex-row">
                             <Link
-                                to="/dashboard/users/create-user"
+                                to="/dashboard/energy-management/energy-types/create-energy-type"
                                 className="flex items-center gap-3 px-4 py-3 text-sm font-bold text-white uppercase bg-green-600 hover:bg-green-700 rounded-md shadow-md hover:shadow-md focus:opacity-85 active:opacity-95 transition"
                                 type="button"
                             >
-                                <svg
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    viewBox="0 0 24 24"
-                                    fill="currentColor"
-                                    className="w-4 h-4"
-                                >
-                                    <path d="M6.25 6.375a4.125 4.125 0 118.25 0 4.125 4.125 0 01-8.25 0zM3.25 19.125a7.125 7.125 0 0114.25 0v.003l-.001.119a.75.75 0 01-.363.63 13.067 13.067 0 01-6.761 1.873c-2.472 0-4.786-.684-6.76-1.873a.75.75 0 01-.364-.63l-.001-.122zM19.75 7.5a.75.75 0 00-1.5 0v2.25H16a.75.75 0 000 1.5h2.25v2.25a.75.75 0 001.5 0v-2.25H22a.75.75 0 000-1.5h-2.25V7.5z" />
-                                </svg>
-                                Agregar Usuario
+                                <IoAddOutline size={25} /> Agregar Tipo de
+                                energia
                             </Link>
                         </div>
                     )}
@@ -50,14 +63,19 @@ export const ListUsersPage = () => {
                 <table className="w-full mt-4 text-left table-auto min-w-full">
                     <thead>
                         <tr>
-                            <th className="p-4 border-y border-blue-gray-100 bg-blue-gray-50/50 text-left">
+                            <th className="p-4 border-y border-blue-gray-100 bg-blue-gray-50/50">
                                 <p className="text-base font-normal text-blue-gray-900 opacity-70">
-                                    Usuario
+                                    #
                                 </p>
                             </th>
-                            <th className="p-4 border-y border-blue-gray-100 bg-blue-gray-50/50 text-center">
+                            <th className="p-4 border-y border-blue-gray-100 bg-blue-gray-50/50">
                                 <p className="text-base font-normal text-blue-gray-900 opacity-70">
-                                    Estatus
+                                    Tipo De Energía
+                                </p>
+                            </th>
+                            <th className="p-4 border-y border-blue-gray-100 bg-blue-gray-50/50">
+                                <p className="text-base font-normal text-blue-gray-900 opacity-70">
+                                    Recurso
                                 </p>
                             </th>
                             {userClaimsJwt?.isAdmin && (
@@ -70,12 +88,22 @@ export const ListUsersPage = () => {
                         </tr>
                     </thead>
                     <tbody>
-                        {users.data?.map((user) => (
-                            <ListItemUsers key={user.id} user={user} />
+                        {content.map((energyType, index) => (
+                            <ListItemEnergyTypes
+                                key={energyType.id}
+                                energyType={energyType}
+                                index={index + currentPage * pageSize + 1}
+                            />
                         ))}
                     </tbody>
                 </table>
             </div>
+            <PaginationControls
+                currentPage={currentPage}
+                totalPages={totalPages}
+                handleNextPage={handleNextPage}
+                handlePreviousPage={handlePreviousPage}
+            />
         </div>
     );
 };

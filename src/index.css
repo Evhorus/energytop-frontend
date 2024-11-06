@@ -1,3 +1,13 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.bg-img-login {
+    background-image: linear-gradient(rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2)),
+        url(assets/bg.jpg);
+    background-repeat: no-repeat;
+    background-size: cover;
+    z-index: -1;
+    inset: 0;
+    position: absolute;
+}

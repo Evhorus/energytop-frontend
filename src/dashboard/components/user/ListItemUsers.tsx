@@ -1,17 +1,16 @@
 import { FaRegEdit } from "react-icons/fa";
 import { RiDeleteBin5Line } from "react-icons/ri";
-import { UserResponse } from "../../shared/interfaces/user.interface";
-import { useUserMutation } from "../";
-import { Link, useNavigate } from "react-router-dom";
-import { useAppStore } from "../../shared/store/useAppStore";
-import { showNotification } from "./Notification";
-import { useEffect } from "react";
+import { Link } from "react-router-dom";
+import { UserResponse } from "../../../shared/interfaces/user.interface";
+import { useUserMutation } from "../../hooks/user/useUsersMutation";
+import { useAppStore } from "../../../shared";
+import { showNotification } from "../Notification";
 
 type Props = {
     user: UserResponse;
 };
 
-export const ListItem = ({ user }: Props) => {
+export const ListItemUsers = ({ user }: Props) => {
     const userClaimsJwt = useAppStore((state) => state.claims);
     const { deleteUserMutation } = useUserMutation({});
     const handleDeleteUser = (userId: UserResponse["id"]) => {

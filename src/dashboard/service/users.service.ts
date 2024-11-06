@@ -55,17 +55,6 @@ export const findUserById = async (identifier: UserResponse["id"] | UserResponse
     }
 };
 
-export const findUserByEmail = async (id: UserResponse["email"]) => {
-    try {
-        const { data } = await httpClient.get<UserResponse>(`${URL}/email/${id}`);
-        return data;
-    } catch (error) {
-        if (isAxiosError(error) && error.response) {
-            throw new Error(error.response.data.message);
-        }
-    }
-};
-
 
 export const deleteUser = async (id: number) => {
     try {

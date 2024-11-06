@@ -1,9 +1,13 @@
 import { useState } from "react";
-import { ListItemRenewableEnergies } from "../../components/RenewableEnergies/ListItemRenewableEnergies";
-import { useRenewableEnergy } from "../../hooks/renewable-energy/useRenewableEnergy";
-import { PaginationControls } from "../../components/PaginationControls";
+import { PaginationControls } from "../../../components/PaginationControls";
+import { ListItemRenewableEnergies } from "../../../components/RenewableEnergy/ListItemRenewableEnergy";
+import { useRenewableEnergy } from "../../../hooks/renewable-energy/useRenewableEnergy";
+import { useAppStore } from "../../../../shared";
+import { Link } from "react-router-dom";
+import { IoAddOutline } from "react-icons/io5";
 
-export const RenewableEnergiesListPage = () => {
+export const RenewableEnergyListPage = () => {
+    const userClaimsJwt = useAppStore((state) => state.claims);
     const [currentPage, setCurrentPage] = useState(0);
     const { renewableEnergies } = useRenewableEnergy({
         currentPage,
@@ -42,6 +46,17 @@ export const RenewableEnergiesListPage = () => {
                             </label>
                         </div>
                     </div>
+                    {userClaimsJwt?.isAdmin && (
+                        <div className="flex gap-2 sm:flex-row">
+                            <Link
+                                to="/dashboard/energy-management/renewable-energy/create-renewable-energy"
+                                className="flex items-center gap-3 px-4 py-3 text-sm font-bold text-white uppercase bg-green-600 hover:bg-green-700 rounded-md shadow-md hover:shadow-md focus:opacity-85 active:opacity-95 transition"
+                                type="button"
+                            >
+                                <IoAddOutline size={25} /> Agregar registro
+                            </Link>
+                        </div>
+                    )}
                 </div>
             </div>
             <div className="overflow-y-auto h-200 sm:h-80 md:h-96 lg:h-[30rem] xl:h-[45rem] p-4">
@@ -78,6 +93,13 @@ export const RenewableEnergiesListPage = () => {
                                     Consumo
                                 </p>
                             </th>
+                            {userClaimsJwt?.isAdmin && (
+                                <th className="p-4 border-y border-blue-gray-100 bg-blue-gray-50/50 text-right">
+                                    <p className="text-base font-normal text-blue-gray-900 opacity-70">
+                                        Acciones
+                                    </p>
+                                </th>
+                            )}
                         </tr>
                     </thead>
                     <tbody>

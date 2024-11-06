@@ -73,7 +73,7 @@ export const MyAccountPage = () => {
                     <input
                         type="submit"
                         value="Actualizar usuario"
-                        className="bg-indigo-500 hover:bg-indigo-700 w-full p-3 text-white uppercase font-bold cursor-pointer transition-colors rounded-md "
+                        className="bg-green-600 hover:bg-green-700  w-full p-3 text-white uppercase font-bold cursor-pointer transition-colors rounded-md "
                     />
                 </form>
             </div>
