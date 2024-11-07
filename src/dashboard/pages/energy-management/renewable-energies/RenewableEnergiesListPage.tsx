@@ -1,19 +1,19 @@
 import { useState } from "react";
 import { PaginationControls } from "../../../components/PaginationControls";
 import { ListItemRenewableEnergy } from "../../../components/RenewableEnergy/ListItemRenewableEnergy";
-import { useRenewableEnergy } from "../../../hooks/renewable-energy/useRenewableEnergy";
-import { useAppStore } from "../../../../shared";
+import { useRenewableEnergies } from "../../../hooks/renewable-energy/useRenewableEnergies";
+import { Loader, useAppStore } from "../../../../shared";
 import { Link } from "react-router-dom";
 import { IoAddOutline } from "react-icons/io5";
 
 export const RenewableEnergiesListPage = () => {
     const userClaimsJwt = useAppStore((state) => state.claims);
     const [currentPage, setCurrentPage] = useState(0);
-    const { renewableEnergies } = useRenewableEnergy({
+    const { renewableEnergies } = useRenewableEnergies({
         currentPage,
         listEnergies: true,
     });
-    if (renewableEnergies.isLoading) return <div>Loading...</div>;
+    if (renewableEnergies.isLoading) return <Loader/>
     if (!renewableEnergies.data) return null;
     const { pageSize, totalPages, content } = renewableEnergies.data;
     const handleNextPage = () => {
@@ -106,7 +106,7 @@ export const RenewableEnergiesListPage = () => {
                         {content.map((renewableEnergy, index) => (
                             <ListItemRenewableEnergy
                                 key={renewableEnergy.id}
-                                renewableEnergies={renewableEnergy}
+                                renewableEnergy={renewableEnergy}
                                 index={index + currentPage * pageSize + 1}
                             />
                         ))}

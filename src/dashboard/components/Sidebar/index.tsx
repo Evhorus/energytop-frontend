@@ -266,7 +266,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                                                 <ul className="mt-4 mb-5.5 flex flex-col gap-2.5 pl-6">
                                                     <li>
                                                         <NavLink
-                                                            to="/dashboard/energy-management/renewable-energy"
+                                                            to="/dashboard/energy-management/renewable-energies"
                                                             end
                                                             className={({
                                                                 isActive,

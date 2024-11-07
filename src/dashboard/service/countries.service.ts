@@ -8,10 +8,10 @@ import {
 
 const URL = "/countries";
 
-export const getCountries = async (currentPage: number = 10) => {
+export const getCountries = async (currentPage: number = 0, pageSize: number =10) => {
     try {
         const { data } = await httpClient<CountryResponse>(
-            `${URL}?page=${currentPage}`
+            `${URL}?page=${currentPage}&size=${pageSize}`
         );
         return data;
     } catch (error) {

@@ -12,7 +12,7 @@ export const router = createBrowserRouter([
             ...routesAuth.map((route) => ({
                 path: route.to,
                 element: (
-                    <Suspense fallback="cargando">
+                    <Suspense fallback="cargando" >
                         <route.component />
                     </Suspense>
                 ),

@@ -31,11 +31,10 @@ export const ListItemUsers = ({ user }: Props) => {
 
     return (
         <tr className="border-b">
-            {userClaimsJwt?.isAdmin}
             <td className="p-4 text-left">
                 <div className="flex items-center gap-3">
                     <img
-                        src="https://demos.creative-tim.com/test/corporate-ui-dashboard/assets/img/team-4.jpg"
+                        src="https://demos.creative-tim.com/test/corporate-ui-dashboard/assets/img/team-6.jpg"
                         alt="John Michael"
                         className="h-9 w-9 rounded-full object-cover"
                     />

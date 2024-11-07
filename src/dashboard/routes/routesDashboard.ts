@@ -33,23 +33,23 @@ const AdvancedEnergySearchPage = lazy(() =>
     }))
 );
 
-const RenewableEnergyListPage = lazy(() =>
+const RenewableEnergiesListPage = lazy(() =>
     import(
-        "../pages/energy-management/renewable-energy/RenewableEnergyListPage"
+        "../pages/energy-management/renewable-energies/RenewableEnergiesListPage"
     ).then((module) => ({
-        default: module.RenewableEnergyListPage,
+        default: module.RenewableEnergiesListPage,
     }))
 );
 const CreateRenewableEnergyPage = lazy(() =>
     import(
-        "../pages/energy-management/renewable-energy/CreateRenewableEnergyPage"
+        "../pages/energy-management/renewable-energies/CreateRenewableEnergyPage"
     ).then((module) => ({
         default: module.CreateRenewableEnergyPage,
     }))
 );
 const UpdateRenewableEnergyPage = lazy(() =>
     import(
-        "../pages/energy-management/renewable-energy/UpdateRenewableEnergyPage"
+        "../pages/energy-management/renewable-energies/UpdateRenewableEnergyPage"
     ).then((module) => ({
         default: module.UpdateRenewableEnergyPage,
     }))
@@ -133,17 +133,17 @@ export const routesDashboard = [
     },
     {
         title: "Renewable Energies",
-        to: "/dashboard/energy-management/renewable-energy",
-        component: RenewableEnergyListPage,
+        to: "/dashboard/energy-management/renewable-energies",
+        component: RenewableEnergiesListPage,
     },
     {
         title: "Renewable Energies",
-        to: "/dashboard/energy-management/renewable-energy/create-renewable-energy",
+        to: "/dashboard/energy-management/renewable-energies/create-renewable-energy",
         component: CreateRenewableEnergyPage,
     },
     {
         title: "Renewable Energies",
-        to: "/dashboard/energy-management/renewable-energy/update-renewable-energy/:id",
+        to: "/dashboard/energy-management/renewable-energies/update-renewable-energy/:id",
         component: UpdateRenewableEnergyPage,
     },
     {

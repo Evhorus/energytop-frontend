@@ -3,14 +3,17 @@ import { Content } from "../../interfaces/renewable-energy-response.interface";
 import { FaRegEdit } from "react-icons/fa";
 import { RiDeleteBin5Line } from "react-icons/ri";
 import { useAppStore } from "../../../shared";
+import { BaseRenewableEnergy } from "../../interfaces/renewable-energies/renewable-energy.interface";
+import { showNotification } from "../Notification";
+import { useRenewableEnergyMutation } from "../../hooks/renewable-energy/useRenewableEnergyMutation";
 
 type Props = {
-    renewableEnergies: Content;
+    renewableEnergy: Content;
     index: number;
 };
 
 export const ListItemRenewableEnergy = ({
-    renewableEnergies,
+    renewableEnergy,
     index,
 }: Props) => {
     const {
@@ -20,8 +23,27 @@ export const ListItemRenewableEnergy = ({
         year,
         production,
         consumption,
-    } = renewableEnergies;
+    } = renewableEnergy;
     const userClaimsJwt = useAppStore((state) => state.claims);
+
+    const { deleteRenewableEnergyMutation } = useRenewableEnergyMutation({});
+
+    
+    const handleDeleteEnergyType = (energyTypeId: BaseRenewableEnergy["id"]) => {
+        showNotification({
+            title: "¿Estás seguro?",
+            text: "¡No podrás revertir esto!",
+            icon: "warning",
+            confirmButtonText: "Sí, ¡elimínalo!",
+            confirmButtonColor: "#3085d6",
+            cancelButtonText: "Cancelar",
+            cancelButtonColor: "#d33",
+            showCancelButton: true,
+            onConfirm: () => {
+                deleteRenewableEnergyMutation.mutate(energyTypeId);
+            },
+        });
+    };
 
     return (
         <tr className="border-b">
@@ -89,19 +111,19 @@ export const ListItemRenewableEnergy = ({
                 <td className="p-4 text-right">
                     <div className="flex gap-2 justify-end">
                         <Link
-                            to={`/dashboard/energy-management/renewable-energy/update-renewable-energy/${id}`}
+                            to={`/dashboard/energy-management/renewable-energies/update-renewable-energy/${id}`}
                         >
                             <FaRegEdit
                                 size={25}
                                 className="hover:text-blue-700"
                             />
                         </Link>
-                        {/* <button onClick={() => handleDeleteEnergyType(id)}>
+                        <button onClick={() => handleDeleteEnergyType(id)}>
                             <RiDeleteBin5Line
                                 size={25}
                                 className="hover:text-red-700"
                             />
-                        </button> */}
+                        </button>
                     </div>
                 </td>
             )}

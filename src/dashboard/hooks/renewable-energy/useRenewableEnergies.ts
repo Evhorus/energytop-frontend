@@ -1,6 +1,8 @@
 import { useQuery } from "@tanstack/react-query";
 import { renewableEnergyService } from "../..";
+import { BaseRenewableEnergy } from "../../interfaces/renewable-energies/renewable-energy.interface";
 interface Options {
+    idRenewableEnergy?: BaseRenewableEnergy["id"];
     currentPage?: number;
     listEnergies?: boolean;
     energyBySourceAndCountry?: EnergyBySourceAndCountry;
@@ -10,7 +12,8 @@ export interface EnergyBySourceAndCountry {
     year: number;
 }
 
-export const useRenewableEnergy = ({
+export const useRenewableEnergies = ({
+    idRenewableEnergy,
     listEnergies,
     currentPage,
     energyBySourceAndCountry,
@@ -35,11 +38,20 @@ export const useRenewableEnergy = ({
     const renewableEnergies = useQuery({
         queryKey: ["renewableEnergies", currentPage],
         queryFn: () =>
-            renewableEnergyService.findAllRenewableEnergy(currentPage),
+            renewableEnergyService.findAllRenewableEnergies(currentPage),
         enabled: !!listEnergies,
         retry: 1,
         refetchOnWindowFocus: false,
     });
 
-    return { renewableEnergies, totalRenewableEnergy };
+    const renewableEnergy = useQuery({
+        queryKey: ["renewableEnergy", idRenewableEnergy],
+        queryFn: () =>
+            renewableEnergyService.findRenewableEnergyById(idRenewableEnergy!),
+        retry: 1,
+        enabled: !!idRenewableEnergy,
+        refetchOnWindowFocus: false,
+    });
+
+    return { totalRenewableEnergy, renewableEnergies, renewableEnergy };
 };

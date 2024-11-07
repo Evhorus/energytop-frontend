@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { useAppStore } from "../../../../shared";
+import { Loader, useAppStore } from "../../../../shared";
 import { useCountries } from "../../../hooks/countries/useCountries";
 import { useState } from "react";
 import { PaginationControls } from "../../../components/PaginationControls";
@@ -12,7 +12,7 @@ export const CountriesListPage = () => {
     const { countries } = useCountries({
         currentPage,
     });
-    if (countries.isLoading) return <div>Loading...</div>;
+    if (countries.isLoading) return <Loader/>
     if (!countries.data) return null;
     const { pageSize, totalPages, content } = countries.data;
     const handleNextPage = () => {

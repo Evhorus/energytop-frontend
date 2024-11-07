@@ -3,6 +3,7 @@ import { useForm } from "react-hook-form";
 import { UserFormLogin } from "../../shared/interfaces/user.interface";
 import { useAuthMutation } from "../hooks/useAuthMutation";
 import { ErrorMessage } from "../../shared";
+
 export const LoginPage = () => {
     const { loginUserMutation } = useAuthMutation();
     const initialValues: UserFormLogin = {
@@ -16,8 +17,10 @@ export const LoginPage = () => {
     } = useForm({
         defaultValues: initialValues,
     });
+
     const handleForm = (userFormLogin: UserFormLogin) =>
         loginUserMutation.mutate(userFormLogin);
+
     return (
         <div className="flex flex-1 items-center justify-center px-6 py-12 lg:px-8 ">
             <div className="bg-white p-8 py-15 rounded-md shadow-xl max-w-md w-full space-y-8 dark:border-strokedark">
@@ -112,22 +115,23 @@ export const LoginPage = () => {
                             )}
                         </div>
                     </div>
-                    <button
-                        type="submit"
-                        className="w-full cursor-pointer rounded-lg border border-slate-500 bg-slate-500 p-4 text-white text-lg transition hover:bg-opacity-90"
-                    >
-                        Iniciar sesión
-                    </button>
+
+                    <div className="flex justify-between">
+                        <button
+                            type="submit"
+                            disabled={loginUserMutation.isPending}
+                            className={`mt-6 w-full rounded-md bg-primary py-4 text-base font-medium text-white shadow-xl disabled:cursor-not-allowed disabled:opacity-50 ${
+                                loginUserMutation.isPending
+                                    ? "opacity-50 cursor-not-allowed"
+                                    : ""
+                            }`}
+                        >
+                            {loginUserMutation.isPending
+                                ? "Iniciando sesión..."
+                                : "Iniciar sesión"}
+                        </button>
+                    </div>
                 </form>
-                {/* <p className="text-center text-sm text-gray-600 mt-6">
-                    ¿No tienes cuenta?{" "}
-                    <Link
-                        to="/auth/register"
-                        className="text-indigo-600 font-semibold hover:text-indigo-500"
-                    >
-                        Regístrate
-                    </Link>
-                </p> */}
             </div>
         </div>
     );

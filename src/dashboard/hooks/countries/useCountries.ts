@@ -5,12 +5,13 @@ import { BaseCountry } from "../../interfaces/countries/countries.interface";
 interface Options {
     idCountry?: BaseCountry["id"];
     currentPage?: number;
+    pageSize?: number;
 }
 
-export const useCountries = ({ idCountry, currentPage }: Options) => {
+export const useCountries = ({ idCountry, currentPage, pageSize }: Options) => {
     const countries = useQuery({
         queryKey: ["countries", currentPage],
-        queryFn: () => countriesService.getCountries(currentPage),
+        queryFn: () => countriesService.getCountries(currentPage,pageSize),
         retry: 1,
         refetchOnWindowFocus: false,
     });

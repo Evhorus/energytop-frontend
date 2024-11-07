@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useEnergyTypes } from "../../../hooks/energy-types/useEnergyTypes";
 import { PaginationControls } from "../../../components/PaginationControls";
 import { ListItemEnergyTypes } from "../../../components/EnergyTypes/ListItemEnergyTypes";
-import { useAppStore } from "../../../../shared";
+import { Loader, useAppStore } from "../../../../shared";
 import { Link } from "react-router-dom";
 import { IoAddOutline } from "react-icons/io5";
 
@@ -12,7 +12,7 @@ export const EnergyTypesListPage = () => {
     const { energyTypes } = useEnergyTypes({
         currentPage,
     });
-    if (energyTypes.isLoading) return <div>Loading...</div>;
+    if (energyTypes.isLoading) return <Loader/>;
     if (!energyTypes.data) return null;
     const { pageSize, totalPages, content } = energyTypes.data;
     const handleNextPage = () => {
@@ -25,6 +25,7 @@ export const EnergyTypesListPage = () => {
             setCurrentPage((prev) => prev - 1);
         }
     };
+
     return (
         <div className="relative flex flex-col w-full h-full text-gray-700 bg-white shadow-xl rounded-xl p-2 overflow-y-auto">
             <div className="relative mx-4 mt-4 overflow-hidden bg-white rounded-none ">

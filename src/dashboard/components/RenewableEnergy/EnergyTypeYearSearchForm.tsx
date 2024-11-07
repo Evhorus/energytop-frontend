@@ -1,16 +1,17 @@
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { AdvancedEnergySearchFormInputs } from "../../interfaces/advanced-energy-search-inputs.interface";
-import { useRenewableEnergy } from "../../hooks/renewable-energy/useRenewableEnergy";
+import { useRenewableEnergies } from "../../hooks/renewable-energy/useRenewableEnergies";
 import { CiSearch } from "react-icons/ci";
 import { useEnergyTypes } from "../../hooks/energy-types/useEnergyTypes";
+import { Loader } from "../../../shared";
 
 export const EnergyTypeYearSearchForm = () => {
     const [isButtonVisible, setButtonVisible] = useState(false);
     const [fadeIn, setFadeIn] = useState(false);
-    const { energyTypes } = useEnergyTypes({currentPage: 0});
+    const [hasSearched, setHasSearched] = useState(false); // Estado para controlar si se hizo la búsqueda
+    const { energyTypes } = useEnergyTypes({ currentPage: 0 });
 
-    console.log(energyTypes.data)
     const currentYear = new Date().getFullYear();
     const years = Array.from(
         { length: currentYear - 2015 + 1 },
@@ -41,9 +42,10 @@ export const EnergyTypeYearSearchForm = () => {
         }
     }, [selectedEnergyType]);
 
-    const { totalRenewableEnergy } = useRenewableEnergy({
+    const { totalRenewableEnergy } = useRenewableEnergies({
         energyBySourceAndCountry: searchParams,
     });
+
 
     const onSearchByEnergyTypeNameAndYear = (
         formData: AdvancedEnergySearchFormInputs
@@ -51,8 +53,10 @@ export const EnergyTypeYearSearchForm = () => {
         const { energyTypeName, year } = formData;
         if (energyTypeName && year) {
             setSearchParams({ energyTypeName, year });
+            setHasSearched(true); // Marca como "buscado" cuando el formulario es enviado
         }
     };
+
     return (
         <>
             <div className="bg-gray-50 shadow-md rounded-lg p-6">
@@ -120,72 +124,80 @@ export const EnergyTypeYearSearchForm = () => {
                 </form>
             </div>
 
+            {totalRenewableEnergy.isLoading && (
+                <div className="mt-8 text-center">
+                    <Loader />
+                </div>
+            )}
             {/* Tabla de Resultados */}
-            {totalRenewableEnergy.data &&
-                totalRenewableEnergy.data.length > 0 && (
-                    <div className="mt-8 max-w-full mx-auto bg-white shadow-lg rounded-lg overflow-hidden">
-                        <h2 className="text-xl font-bold text-gray-800 px-6 py-4 border-b border-gray-200">
-                            Resultados de Energía Renovable
-                        </h2>
-                        <div className="overflow-x-auto">
-                            {" "}
-                            {/* Contenedor para permitir el desplazamiento horizontal */}
-                            <table className="min-w-full bg-white">
-                                <thead className="bg-gray-200 border-b border-gray-300">
-                                    <tr>
-                                        <th className="px-6 py-3 text-left text-gray-700 font-semibold uppercase tracking-wider">
-                                            #
-                                        </th>
-                                        <th className="px-6 py-3 text-left text-gray-700 font-semibold uppercase tracking-wider">
-                                            País
-                                        </th>
-                                        <th className="px-6 py-3 text-left text-gray-700 font-semibold uppercase tracking-wider">
-                                            Tipo de Energía
-                                        </th>
-                                        <th className="px-6 py-3 text-left text-gray-700 font-semibold uppercase tracking-wider">
-                                            Año
-                                        </th>
-                                        <th className="px-6 py-3 text-left text-gray-700 font-semibold uppercase tracking-wider">
-                                            Producción Total
-                                        </th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {totalRenewableEnergy.data.map(
-                                        (item, index) => (
-                                            <tr
-                                                key={index}
-                                                className={`${
-                                                    index % 2 === 0
-                                                        ? "bg-white"
-                                                        : "bg-gray-50"
-                                                } hover:bg-gray-100 transition duration-300`}
-                                            >
-                                                <td className="px-6 py-4 text-gray-800 border-b border-gray-200">
-                                                    {index + 1}
-                                                </td>
-                                                <td className="px-6 py-4 text-gray-800 border-b border-gray-200">
-                                                    {item.country}
-                                                </td>
-                                                <td className="px-6 py-4 text-gray-800 border-b border-gray-200">
-                                                    {item.energyType}
-                                                </td>
-                                                <td className="px-6 py-4 text-gray-800 border-b border-gray-200">
-                                                    {item.year}
-                                                </td>
-                                                <td className="px-6 py-4 text-gray-800 border-b border-gray-200 font-medium">
-                                                    {item.totalProduction.toFixed(
-                                                        2
-                                                    )}
-                                                </td>
-                                            </tr>
-                                        )
-                                    )}
-                                </tbody>
-                            </table>
-                        </div>
+            {hasSearched &&
+            totalRenewableEnergy.data &&
+            totalRenewableEnergy.data.length > 0 ? (
+                <div className="mt-8 max-w-full mx-auto bg-white shadow-lg rounded-lg overflow-hidden">
+                    <h2 className="text-xl font-bold text-gray-800 px-6 py-4 border-b border-gray-200">
+                        Resultados de Energía Renovable
+                    </h2>
+                    <div className="overflow-x-auto">
+                        <table className="min-w-full bg-white">
+                            <thead className="bg-gray-200 border-b border-gray-300">
+                                <tr>
+                                    <th className="px-6 py-3 text-left text-gray-700 font-semibold uppercase tracking-wider">
+                                        #
+                                    </th>
+                                    <th className="px-6 py-3 text-left text-gray-700 font-semibold uppercase tracking-wider">
+                                        País
+                                    </th>
+                                    <th className="px-6 py-3 text-left text-gray-700 font-semibold uppercase tracking-wider">
+                                        Tipo de Energía
+                                    </th>
+                                    <th className="px-6 py-3 text-left text-gray-700 font-semibold uppercase tracking-wider">
+                                        Año
+                                    </th>
+                                    <th className="px-6 py-3 text-left text-gray-700 font-semibold uppercase tracking-wider">
+                                        Producción Total
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {totalRenewableEnergy.data.map(
+                                    (item, index) => (
+                                        <tr
+                                            key={index}
+                                            className={`${
+                                                index % 2 === 0
+                                                    ? "bg-white"
+                                                    : "bg-gray-50"
+                                            } hover:bg-gray-100 transition duration-300`}
+                                        >
+                                            <td className="px-6 py-4 text-gray-800 border-b border-gray-200">
+                                                {index + 1}
+                                            </td>
+                                            <td className="px-6 py-4 text-gray-800 border-b border-gray-200">
+                                                {item.country}
+                                            </td>
+                                            <td className="px-6 py-4 text-gray-800 border-b border-gray-200">
+                                                {item.energyType}
+                                            </td>
+                                            <td className="px-6 py-4 text-gray-800 border-b border-gray-200">
+                                                {item.year}
+                                            </td>
+                                            <td className="px-6 py-4 text-gray-800 border-b border-gray-200 font-medium">
+                                                {item.totalProduction.toFixed(
+                                                    2
+                                                )}
+                                            </td>
+                                        </tr>
+                                    )
+                                )}
+                            </tbody>
+                        </table>
                     </div>
-                )}
+                </div>
+            ) : hasSearched && totalRenewableEnergy.data?.length === 0 ? (
+                <div className="mt-8 text-center text-gray-600">
+                    <p>No se encontraron registros.</p>
+                </div>
+            ) : null}
         </>
     );
 };
