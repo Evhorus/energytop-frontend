@@ -9,10 +9,12 @@ import { IoAddOutline } from "react-icons/io5";
 export const EnergyTypesListPage = () => {
     const userClaimsJwt = useAppStore((state) => state.claims);
     const [currentPage, setCurrentPage] = useState(0);
+    const [searchTerm, setSearchTerm] = useState("");
     const { energyTypes } = useEnergyTypes({
         currentPage,
     });
-    if (energyTypes.isLoading) return <Loader/>;
+    const [searchBy, setSearchBy] = useState("");
+    if (energyTypes.isLoading) return <Loader />;
     if (!energyTypes.data) return null;
     const { pageSize, totalPages, content } = energyTypes.data;
     const handleNextPage = () => {
@@ -26,6 +28,12 @@ export const EnergyTypesListPage = () => {
         }
     };
 
+    const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setSearchTerm(e.target.value);
+    };
+    const handleSelectChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+        setSearchBy(e.target.value);
+    };
     return (
         <div className="relative flex flex-col w-full h-full text-gray-700 bg-white shadow-xl rounded-xl p-2 overflow-y-auto">
             <div className="relative mx-4 mt-4 overflow-hidden bg-white rounded-none ">
@@ -35,15 +43,33 @@ export const EnergyTypesListPage = () => {
                     </h5>
                 </div>
                 <div className="flex items-center justify-between gap-4 md:flex-row">
-                    <div className="w-full md:w-72">
-                        <div className="relative h-10">
-                            <input
-                                className="peer w-full h-full px-3 py-2.5 border rounded-lg text-sm text-blue-gray-700 placeholder-transparent focus:border-gray-900 transition outline-none"
-                                placeholder="Buscar"
-                            />
-                            <label className="absolute left-3 top-1 text-gray-500 text-base peer-placeholder-shown:top-2 peer-focus:top-1 peer-focus:text-xs transition-all">
-                                Buscar
-                            </label>
+                    <div className="w-full md:w-80">
+                        <div className="flex flex-col space-y-3">
+                            <select
+                                value={searchBy}
+                                onChange={handleSelectChange}
+                                className="w-full px-2.5 py-2.5 text-base border rounded-lg text-blue-gray-70"
+                            >
+                                <option value="">
+                                    Selecciona un criterio de búsqueda
+                                </option>
+                                <option value="countryName">
+                                    Tipo de energia
+                                </option>
+                            </select>
+                            {searchBy && (
+                                <input
+                                    type="text"
+                                    value={searchTerm}
+                                    onChange={handleSearchChange}
+                                    className="w-full px-2 py-2 text-base border rounded-lg text-blue-gray-700"
+                                    placeholder={
+                                        searchBy === "countryName"
+                                            ? "Buscar por tipo de energia"
+                                            : "Buscar"
+                                    }
+                                />
+                            )}
                         </div>
                     </div>
                     {userClaimsJwt?.isAdmin && (

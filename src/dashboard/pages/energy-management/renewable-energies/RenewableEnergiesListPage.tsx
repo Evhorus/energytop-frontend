@@ -10,7 +10,7 @@ export const RenewableEnergiesListPage = () => {
     const userClaimsJwt = useAppStore((state) => state.claims);
     const [currentPage, setCurrentPage] = useState(0);
     const [searchTerm, setSearchTerm] = useState("");
-    const [searchBy, setSearchBy] = useState("energyName");
+    const [searchBy, setSearchBy] = useState("");
     const { renewableEnergies } = useRenewableEnergies({
         currentPage,
         listEnergies: true,
@@ -50,34 +50,40 @@ export const RenewableEnergiesListPage = () => {
                     </h5>
                 </div>
                 <div className="flex items-center justify-between gap-4 md:flex-row">
-                    <div className="w-full md:w-96">
-                        {" "}
-                        {/* Cambié el ancho a más grande */}
-                        <div className="flex items-center space-x-2">
-                            {/* Selector */}
+                    <div className="w-full md:w-80">
+                        <div className="flex flex-col space-y-3">
                             <select
                                 value={searchBy}
                                 onChange={handleSelectChange}
-                                className="h-full px-3 py-2 border rounded-lg text-sm text-blue-gray-700 bg-transparent focus:border-gray-900 transition-all outline-none"
+                                className="w-full px-2.5 py-2.5 text-base border rounded-lg text-blue-gray-70"
                             >
+                                <option value="">
+                                    Selecciona un criterio de búsqueda
+                                </option>
                                 <option value="energyName">
-                                    {" "}
-                                    Tipo de energia
+                                    Tipo de energía
                                 </option>
                                 <option value="countryName">País</option>
-                                {/* Añadir más opciones según sea necesario */}
                             </select>
 
-                            {/* Input de búsqueda más ancho */}
-                            <input
-                                type="text"
-                                value={searchTerm}
-                                onChange={handleSearchChange}
-                                className="w-full h-full px-3 py-2.5 border rounded-lg text-sm text-blue-gray-700 focus:border-gray-900 transition outline-none"
-                                placeholder="Buscar"
-                            />
+                            {searchBy && (
+                                <input
+                                    type="text"
+                                    value={searchTerm}
+                                    onChange={handleSearchChange}
+                                    className="w-full px-2 py-2 text-base border rounded-lg text-blue-gray-700"
+                                    placeholder={
+                                        searchBy === "energyName"
+                                            ? "Buscar por tipo de energía"
+                                            : searchBy === "countryName"
+                                            ? "Buscar por país"
+                                            : "Buscar"
+                                    }
+                                />
+                            )}
                         </div>
                     </div>
+
                     {userClaimsJwt?.isAdmin && (
                         <div className="flex gap-2 sm:flex-row">
                             <Link
