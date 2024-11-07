@@ -10,10 +10,10 @@ import {
 
 const URL = "/renewable-energy";
 
-export const findAllRenewableEnergies = async (currentPage: number = 0) => {
+export const findAllRenewableEnergies = async (currentPage: number = 0,pageSize: number = 10) => {
     try {
         const { data } = await httpClient<RenewableEnergyResponse>(
-            `${URL}?page=${currentPage}`
+            `${URL}?page=${currentPage}&size=${pageSize}`
         );
         return data;
     } catch (error) {

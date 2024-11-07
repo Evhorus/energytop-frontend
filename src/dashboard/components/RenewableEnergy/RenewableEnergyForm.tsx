@@ -114,7 +114,7 @@ export const RenewableEnergyForm = ({ register, errors }: Props) => {
                 <input
                     id="production"
                     className="w-full p-3  border border-gray-200"
-                    type="text"
+                    type="number"
                     placeholder="Produccion"
                     {...register("production", {
                         required: "La produccion es obligatorio",
@@ -136,7 +136,7 @@ export const RenewableEnergyForm = ({ register, errors }: Props) => {
                 <input
                     id="consumption"
                     className="w-full p-3  border border-gray-200"
-                    type="text"
+                    type="number"
                     placeholder="Consumo"
                     {...register("consumption", {
                         required: "El consumo es obligatorio",

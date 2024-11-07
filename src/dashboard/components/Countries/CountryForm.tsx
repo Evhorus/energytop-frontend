@@ -56,7 +56,7 @@ export const CountryForm = ({ register, errors }: Props) => {
                 <input
                     id="population"
                     className="w-full p-3  border border-gray-200"
-                    type="text"
+                    type="number"
                     placeholder="Codigo del país"
                     {...register("population", {
                         required: "La poblacion es obligatorio",

@@ -5,12 +5,13 @@ import { BaseEnergyType } from "../../interfaces/energy-types/energy-type.interf
 interface Options {
     idEnergyType?: BaseEnergyType["id"];
     currentPage?: number;
+    pageSize?: number;
 }
 
-export const useEnergyTypes = ({ currentPage, idEnergyType }: Options) => {
+export const useEnergyTypes = ({ currentPage, idEnergyType,pageSize }: Options) => {
     const energyTypes = useQuery({
         queryKey: ["energyTypes", currentPage],
-        queryFn: () => energyTypesService.getEnergyTypes(currentPage),
+        queryFn: () => energyTypesService.getEnergyTypes(currentPage, pageSize),
         retry: 1,
         refetchOnWindowFocus: false,
     });

@@ -8,18 +8,18 @@ export const AdvancedEnergySearchPage = () => {
             value: "totalProductionBySourceAndYear",
             label: "Producción total por tipo de fuente y año (agrupada por regiones | países)",
         },
-        {
-            value: "renewablePercentageByCountry",
-            label: "Porcentaje de energía renovable en consumo total por país",
-        },
-        {
-            value: "installedCapacityTrend",
-            label: "Tendencia de capacidad instalada por tipo de energía",
-        },
-        {
-            value: "topWindEnergyCountries",
-            label: "Top 10 países en producción de energía eólica",
-        },
+        // {
+        //     value: "renewablePercentageByCountry",
+        //     label: "Porcentaje de energía renovable en consumo total por país",
+        // },
+        // {
+        //     value: "installedCapacityTrend",
+        //     label: "Tendencia de capacidad instalada por tipo de energía",
+        // },
+        // {
+        //     value: "topWindEnergyCountries",
+        //     label: "Top 10 países en producción de energía eólica",
+        // },
     ];
 
     const handleActionChange = (

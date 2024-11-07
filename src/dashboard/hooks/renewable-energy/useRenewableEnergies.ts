@@ -6,6 +6,7 @@ interface Options {
     currentPage?: number;
     listEnergies?: boolean;
     energyBySourceAndCountry?: EnergyBySourceAndCountry;
+    pageSize?: number;
 }
 export interface EnergyBySourceAndCountry {
     energyTypeName: string;
@@ -17,6 +18,7 @@ export const useRenewableEnergies = ({
     listEnergies,
     currentPage,
     energyBySourceAndCountry,
+    pageSize,
 }: Options) => {
     const totalRenewableEnergy = useQuery({
         queryKey: [
@@ -38,7 +40,7 @@ export const useRenewableEnergies = ({
     const renewableEnergies = useQuery({
         queryKey: ["renewableEnergies", currentPage],
         queryFn: () =>
-            renewableEnergyService.findAllRenewableEnergies(currentPage),
+            renewableEnergyService.findAllRenewableEnergies(currentPage,pageSize),
         enabled: !!listEnergies,
         retry: 1,
         refetchOnWindowFocus: false,

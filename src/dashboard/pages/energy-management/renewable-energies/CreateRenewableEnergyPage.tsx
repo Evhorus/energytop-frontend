@@ -39,9 +39,9 @@ export const CreateRenewableEnergyPage = () => {
     return (
         <>
             <div className="max-w-3xl mx-auto">
-                <h1 className="text-4xl font-bold">Crear Energia renovable</h1>
+                <h1 className="text-4xl font-bold">Crear registro de energia renovable</h1>
                 <p className="text-2xl font-light text-gray-500 mt-5">
-                    Llena el siguiente formulario para crear una energia
+                    Llena el siguiente formulario para crear un registro de energia
                     renovable
                 </p>
                 <nav className="my-5">

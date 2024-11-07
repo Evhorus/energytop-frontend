@@ -7,10 +7,13 @@ import {
 } from "../interfaces/energy-types/energy-type.interface";
 
 const URL = "/energy-types";
-export const getEnergyTypes = async (currentPage: number = 10) => {
+export const getEnergyTypes = async (
+    currentPage: number = 10,
+    pageSize: number = 10
+) => {
     try {
         const { data } = await httpClient<EnergyTypeResponse>(
-            `${URL}?page=${currentPage}&size=10`
+            `${URL}?page=${currentPage}&size=${pageSize}`
         );
         return data;
     } catch (error) {
@@ -67,7 +70,9 @@ export const updateEnergyType = async ({ idEnergyType, formData }: Options) => {
 
 export const deleteEnergyType = async (idEnergyType: BaseEnergyType["id"]) => {
     try {
-        const { data } = await httpClient.delete<string>(`${URL}/${idEnergyType}`);
+        const { data } = await httpClient.delete<string>(
+            `${URL}/${idEnergyType}`
+        );
         return data;
     } catch (error) {
         if (isAxiosError(error) && error.response) {

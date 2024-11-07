@@ -6,7 +6,7 @@ import { CountryForm } from "../../../components/Countries/CountryForm";
 
 export const CreateCountryPage = () => {
     const { createCountryMutation } = useCountriesMutation({
-        redirect: "/dashboard/energy-management/energy-types",
+        redirect: "/dashboard/energy-management/countries",
     });
     const initialValues: CountryFormInputs = {
         countryName: "",
