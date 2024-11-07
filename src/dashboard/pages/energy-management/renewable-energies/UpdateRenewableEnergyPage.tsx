@@ -13,7 +13,7 @@ export const UpdateRenewableEnergyPage = () => {
     const idRenewableEnergy = +params.id!;
     const { renewableEnergy } = useRenewableEnergies({ idRenewableEnergy });
 
-    console.log(renewableEnergy.data)
+    console.log(renewableEnergy.data);
     const { updateRenewableEnergyMutation } = useRenewableEnergyMutation({
         redirect: "/dashboard/energy-management/renewable-energy",
         idRenewableEnergy: renewableEnergy.data?.id,
@@ -33,7 +33,7 @@ export const UpdateRenewableEnergyPage = () => {
             year: new Date().getFullYear(),
         },
     });
-    
+
     useEffect(() => {
         if (renewableEnergy.data) {
             reset({
@@ -44,8 +44,8 @@ export const UpdateRenewableEnergyPage = () => {
                 year: renewableEnergy.data.year,
             });
         }
-    }, [renewableEnergy.data, reset,]);
-    
+    }, [renewableEnergy.data, reset]);
+
     const handleForm = (formData: RenewableEnergyFormInputs) => {
         const formWithId = {
             idRenewableEnergy,
@@ -59,10 +59,12 @@ export const UpdateRenewableEnergyPage = () => {
     return (
         <>
             <div className="max-w-3xl mx-auto">
-                <h1 className="text-4xl font-bold">Crear Energia renovable</h1>
+                <h1 className="text-4xl font-bold">
+                    Actualizar registro de energía renovable
+                </h1>
                 <p className="text-2xl font-light text-gray-500 mt-5">
-                    Llena el siguiente formulario para crear una energia
-                    renovable
+                    Modifica los datos del registro de energía renovable
+                    existente
                 </p>
                 <nav className="my-5">
                     <Link

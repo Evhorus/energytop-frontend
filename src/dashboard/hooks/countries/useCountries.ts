@@ -7,7 +7,7 @@ interface Options {
     currentPage?: number;
     pageSize?: number;
     searchTerm?: string;
-    searchBy?: string; // Enumera las opciones de búsqueda válidas
+    searchBy?: string; 
 }
 export const useCountries = ({
     idCountry,

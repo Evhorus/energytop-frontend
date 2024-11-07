@@ -8,13 +8,25 @@ import {
     RenewableEnergyFormInputs,
 } from "../interfaces/renewable-energies/renewable-energy.interface";
 
-const URL = "/renewable-energy";
+const URL = "/renewable-energies";
 
 export const findAllRenewableEnergies = async (currentPage: number = 0,pageSize: number = 10) => {
     try {
         const { data } = await httpClient<RenewableEnergyResponse>(
             `${URL}?page=${currentPage}&size=${pageSize}`
         );
+        return data;
+    } catch (error) {
+        if (isAxiosError(error) && error.response) {
+            throw new Error(error.response.data.message);
+        }
+    }
+};
+
+export const searchRenewableEnergies = async (searchTerm: string, searchBy: string) => {
+    
+    try {
+        const { data } = await httpClient<BaseRenewableEnergy[]>(`${URL}/search?searchTerm=${searchTerm}&searchBy=${searchBy}`);
         return data;
     } catch (error) {
         if (isAxiosError(error) && error.response) {

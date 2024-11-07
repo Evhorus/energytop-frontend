@@ -7,6 +7,8 @@ interface Options {
     listEnergies?: boolean;
     energyBySourceAndCountry?: EnergyBySourceAndCountry;
     pageSize?: number;
+    searchTerm?: string;
+    searchBy?: string;
 }
 export interface EnergyBySourceAndCountry {
     energyTypeName: string;
@@ -19,6 +21,8 @@ export const useRenewableEnergies = ({
     currentPage,
     energyBySourceAndCountry,
     pageSize,
+    searchBy,
+    searchTerm,
 }: Options) => {
     const totalRenewableEnergy = useQuery({
         queryKey: [
@@ -40,7 +44,10 @@ export const useRenewableEnergies = ({
     const renewableEnergies = useQuery({
         queryKey: ["renewableEnergies", currentPage],
         queryFn: () =>
-            renewableEnergyService.findAllRenewableEnergies(currentPage,pageSize),
+            renewableEnergyService.findAllRenewableEnergies(
+                currentPage,
+                pageSize
+            ),
         enabled: !!listEnergies,
         retry: 1,
         refetchOnWindowFocus: false,
@@ -55,5 +62,22 @@ export const useRenewableEnergies = ({
         refetchOnWindowFocus: false,
     });
 
-    return { totalRenewableEnergy, renewableEnergies, renewableEnergy };
+    const searchRenewableEnergies = useQuery({
+        queryKey: ["searchRenewableEnergies", searchTerm, searchBy],
+        queryFn: () =>
+            renewableEnergyService.searchRenewableEnergies(
+                searchTerm!,
+                searchBy!
+            ),
+        retry: 1,
+        enabled: !!searchTerm, // Solo activa esta consulta si hay un término de búsqueda
+        refetchOnWindowFocus: false,
+    });
+
+    return {
+        totalRenewableEnergy,
+        renewableEnergies,
+        renewableEnergy,
+        searchRenewableEnergies,
+    };
 };

@@ -7,11 +7,15 @@ import { BaseRenewableEnergy } from "../../interfaces/renewable-energies/renewab
 interface Options {
     idRenewableEnergy?: BaseRenewableEnergy["id"];
     redirect?: string;
+    searchTerm?: string;
+    searchBy?: string;
 }
 
 export const useRenewableEnergyMutation = ({
     idRenewableEnergy,
     redirect,
+    searchBy,
+    searchTerm,
 }: Options) => {
     const navigate = useNavigate();
     const queryClient = useQueryClient();
@@ -86,6 +90,9 @@ export const useRenewableEnergyMutation = ({
         onSuccess: () => {
             queryClient.invalidateQueries({
                 queryKey: ["renewableEnergies"],
+            });
+            queryClient.invalidateQueries({
+                queryKey: ["searchRenewableEnergies", searchTerm, searchBy],
             });
             showNotification({
                 title: "¡Éxito!",

@@ -10,11 +10,15 @@ import { useRenewableEnergyMutation } from "../../hooks/renewable-energy/useRene
 type Props = {
     renewableEnergy: Content;
     index: number;
+    searchTerm?: string;
+    searchBy?: string;
 };
 
 export const ListItemRenewableEnergy = ({
     renewableEnergy,
     index,
+    searchBy,
+    searchTerm,
 }: Props) => {
     const {
         id,
@@ -26,10 +30,14 @@ export const ListItemRenewableEnergy = ({
     } = renewableEnergy;
     const userClaimsJwt = useAppStore((state) => state.claims);
 
-    const { deleteRenewableEnergyMutation } = useRenewableEnergyMutation({});
+    const { deleteRenewableEnergyMutation } = useRenewableEnergyMutation({
+        searchBy,
+        searchTerm,
+    });
 
-    
-    const handleDeleteEnergyType = (energyTypeId: BaseRenewableEnergy["id"]) => {
+    const handleDeleteEnergyType = (
+        energyTypeId: BaseRenewableEnergy["id"]
+    ) => {
         showNotification({
             title: "¿Estás seguro?",
             text: "¡No podrás revertir esto!",

@@ -9,11 +9,19 @@ import { IoAddOutline } from "react-icons/io5";
 export const RenewableEnergiesListPage = () => {
     const userClaimsJwt = useAppStore((state) => state.claims);
     const [currentPage, setCurrentPage] = useState(0);
+    const [searchTerm, setSearchTerm] = useState("");
+    const [searchBy, setSearchBy] = useState("energyName");
     const { renewableEnergies } = useRenewableEnergies({
         currentPage,
         listEnergies: true,
     });
-    if (renewableEnergies.isLoading) return <Loader/>
+
+    const { searchRenewableEnergies } = useRenewableEnergies({
+        searchTerm,
+        searchBy,
+    });
+
+    if (renewableEnergies.isLoading) return <Loader />;
     if (!renewableEnergies.data) return null;
     const { pageSize, totalPages, content } = renewableEnergies.data;
     const handleNextPage = () => {
@@ -26,6 +34,13 @@ export const RenewableEnergiesListPage = () => {
             setCurrentPage((prev) => prev - 1);
         }
     };
+    const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setSearchTerm(e.target.value);
+    };
+
+    const handleSelectChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+        setSearchBy(e.target.value);
+    };
     return (
         <div className="relative flex flex-col w-full h-full text-gray-700 bg-white shadow-xl rounded-xl p-2 overflow-y-auto">
             <div className="relative mx-4 mt-4 overflow-hidden bg-white rounded-none ">
@@ -35,15 +50,32 @@ export const RenewableEnergiesListPage = () => {
                     </h5>
                 </div>
                 <div className="flex items-center justify-between gap-4 md:flex-row">
-                    <div className="w-full md:w-72">
-                        <div className="relative h-10">
+                    <div className="w-full md:w-96">
+                        {" "}
+                        {/* Cambié el ancho a más grande */}
+                        <div className="flex items-center space-x-2">
+                            {/* Selector */}
+                            <select
+                                value={searchBy}
+                                onChange={handleSelectChange}
+                                className="h-full px-3 py-2 border rounded-lg text-sm text-blue-gray-700 bg-transparent focus:border-gray-900 transition-all outline-none"
+                            >
+                                <option value="energyName">
+                                    {" "}
+                                    Tipo de energia
+                                </option>
+                                <option value="countryName">País</option>
+                                {/* Añadir más opciones según sea necesario */}
+                            </select>
+
+                            {/* Input de búsqueda más ancho */}
                             <input
-                                className="peer w-full h-full px-3 py-2.5 border rounded-lg text-sm text-blue-gray-700 placeholder-transparent focus:border-gray-900 transition outline-none"
+                                type="text"
+                                value={searchTerm}
+                                onChange={handleSearchChange}
+                                className="w-full h-full px-3 py-2.5 border rounded-lg text-sm text-blue-gray-700 focus:border-gray-900 transition outline-none"
                                 placeholder="Buscar"
                             />
-                            <label className="absolute left-3 top-1 text-gray-500 text-base peer-placeholder-shown:top-2 peer-focus:top-1 peer-focus:text-xs transition-all">
-                                Buscar
-                            </label>
                         </div>
                     </div>
                     {userClaimsJwt?.isAdmin && (
@@ -103,22 +135,62 @@ export const RenewableEnergiesListPage = () => {
                         </tr>
                     </thead>
                     <tbody>
-                        {content.map((renewableEnergy, index) => (
-                            <ListItemRenewableEnergy
-                                key={renewableEnergy.id}
-                                renewableEnergy={renewableEnergy}
-                                index={index + currentPage * pageSize + 1}
-                            />
-                        ))}
+                        {searchTerm ? (
+                            searchRenewableEnergies.data?.length === 0 ? (
+                                <tr>
+                                    <td
+                                        colSpan={10}
+                                        className="text-center text-gray-500 py-4"
+                                    >
+                                        <span className="font-semibold text-xl">
+                                            Ups, no se encontraron registros
+                                        </span>
+                                        <p className="text-sm text-gray-400">
+                                            No hay registros de energías
+                                            renovables que coincidan con esa
+                                            búsqueda.
+                                        </p>
+                                    </td>
+                                </tr>
+                            ) : (
+                                searchRenewableEnergies.data?.map(
+                                    (renewableEnergy, index) => (
+                                        <ListItemRenewableEnergy
+                                            key={renewableEnergy.id}
+                                            renewableEnergy={renewableEnergy}
+                                            index={
+                                                index +
+                                                currentPage * pageSize +
+                                                1
+                                            }
+                                            searchTerm={searchTerm}
+                                            searchBy={searchBy}
+                                        />
+                                    )
+                                )
+                            )
+                        ) : (
+                            content.map((renewableEnergy, index) => (
+                                <ListItemRenewableEnergy
+                                    key={renewableEnergy.id}
+                                    renewableEnergy={renewableEnergy}
+                                    index={index + currentPage * pageSize + 1}
+                                    searchTerm={searchTerm}
+                                    searchBy={searchBy}
+                                />
+                            ))
+                        )}
                     </tbody>
                 </table>
             </div>
-            <PaginationControls
-                currentPage={currentPage}
-                totalPages={totalPages}
-                handleNextPage={handleNextPage}
-                handlePreviousPage={handlePreviousPage}
-            />
+            {!searchTerm && (
+                <PaginationControls
+                    currentPage={currentPage}
+                    totalPages={totalPages}
+                    handleNextPage={handleNextPage}
+                    handlePreviousPage={handlePreviousPage}
+                />
+            )}
         </div>
     );
 };

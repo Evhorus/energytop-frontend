@@ -7,9 +7,16 @@ import { showNotification } from "../../components/Notification";
 interface Options {
     idCountry?: BaseCountry["id"];
     redirect?: string;
+    searchTerm?: string;
+    searchBy?: string;
 }
 
-export const useCountriesMutation = ({ idCountry, redirect }: Options) => {
+export const useCountriesMutation = ({
+    idCountry,
+    redirect,
+    searchBy,
+    searchTerm,
+}: Options) => {
     const navigate = useNavigate();
     const queryClient = useQueryClient();
 
@@ -83,6 +90,9 @@ export const useCountriesMutation = ({ idCountry, redirect }: Options) => {
         onSuccess: () => {
             queryClient.invalidateQueries({
                 queryKey: ["countries"],
+            });
+            queryClient.invalidateQueries({
+                queryKey: ["searchCountries", searchTerm, searchBy],
             });
             showNotification({
                 title: "¡Éxito!",

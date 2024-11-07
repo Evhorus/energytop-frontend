@@ -124,21 +124,46 @@ export const CountriesListPage = () => {
                     </thead>
 
                     <tbody>
-                        {searchTerm
-                            ? searchCountries.data?.map((country, index) => (
-                                  <ListItemCountry
-                                      key={country.id}
-                                      country={country}
-                                      index={index + currentPage * pageSize + 1}
-                                  />
-                              ))
-                            : content.map((country, index) => (
-                                  <ListItemCountry
-                                      key={country.id}
-                                      country={country}
-                                      index={index + currentPage * pageSize + 1}
-                                  />
-                              ))}
+                        {searchTerm ? (
+                            searchCountries.data?.length === 0 ? (
+                                <tr>
+                                    <td
+                                        colSpan={5}
+                                        className="text-center text-gray-500 py-4"
+                                    >
+                                        <span className="font-semibold text-xl">
+                                            Ups, no encontramos países
+                                        </span>
+                                        <p className="text-sm text-gray-400">
+                                            No hay países con ese nombre o no
+                                            existe.
+                                        </p>
+                                    </td>
+                                </tr>
+                            ) : (
+                                searchCountries.data?.map((country, index) => (
+                                    <ListItemCountry
+                                        key={country.id}
+                                        country={country}
+                                        index={
+                                            index + currentPage * pageSize + 1
+                                        }
+                                        searchTerm={searchTerm}
+                                        searchBy={searchBy}
+                                    />
+                                ))
+                            )
+                        ) : (
+                            content.map((country, index) => (
+                                <ListItemCountry
+                                    key={country.id}
+                                    country={country}
+                                    index={index + currentPage * pageSize + 1}
+                                    searchTerm={searchTerm}
+                                    searchBy={searchBy}
+                                />
+                            ))
+                        )}
                     </tbody>
                 </table>
             </div>

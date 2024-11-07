@@ -6,7 +6,7 @@ import { RenewableEnergyForm } from "../../../components/RenewableEnergy/Renewab
 
 export const CreateRenewableEnergyPage = () => {
     const { createRenewableEnergyMutation } = useRenewableEnergyMutation({
-        redirect: "/dashboard/energy-management/renewable-energy",
+        redirect: "/dashboard/energy-management/renewable-energies",
     });
     const initialValues: RenewableEnergyFormInputs = {
         energyType: null,
@@ -35,14 +35,15 @@ export const CreateRenewableEnergyPage = () => {
         createRenewableEnergyMutation.mutate(formData);
     };
 
-    
     return (
         <>
             <div className="max-w-3xl mx-auto">
-                <h1 className="text-4xl font-bold">Crear registro de energia renovable</h1>
+                <h1 className="text-4xl font-bold">
+                    Crear nuevo registro de energía renovable
+                </h1>
                 <p className="text-2xl font-light text-gray-500 mt-5">
-                    Llena el siguiente formulario para crear un registro de energia
-                    renovable
+                    Llena el siguiente formulario para crear un registro de
+                    energía renovable
                 </p>
                 <nav className="my-5">
                     <Link
@@ -61,7 +62,7 @@ export const CreateRenewableEnergyPage = () => {
                     <RenewableEnergyForm register={register} errors={errors} />
                     <input
                         type="submit"
-                        value="Crear energia renovable"
+                        value="Crear nuevo registro"
                         className="bg-green-600 hover:bg-green-700  w-full p-3 text-white uppercase font-bold cursor-pointer transition-colors rounded-md "
                     />
                 </form>

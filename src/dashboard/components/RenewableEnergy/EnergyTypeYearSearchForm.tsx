@@ -46,7 +46,6 @@ export const EnergyTypeYearSearchForm = () => {
         energyBySourceAndCountry: searchParams,
     });
 
-
     const onSearchByEnergyTypeNameAndYear = (
         formData: AdvancedEnergySearchFormInputs
     ) => {
@@ -194,10 +193,17 @@ export const EnergyTypeYearSearchForm = () => {
                     </div>
                 </div>
             ) : hasSearched && totalRenewableEnergy.data?.length === 0 ? (
-                <div className="mt-8 text-center text-gray-600">
-                    <p>No se encontraron registros.</p>
+                <div className="mt-8 text-center text-gray-500">
+                    <span className="font-semibold text-xl">
+                        Ups, no se encontraron registros
+                    </span>
+                    <p className="text-sm text-gray-400">
+                        No hay registros de energías renovables que coincidan
+                        con esa búsqueda.
+                    </p>
                 </div>
             ) : null}
         </>
     );
 };
+
