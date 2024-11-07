@@ -6,12 +6,19 @@ interface Options {
     idCountry?: BaseCountry["id"];
     currentPage?: number;
     pageSize?: number;
+    searchTerm?: string;
+    searchBy?: string; // Enumera las opciones de búsqueda válidas
 }
-
-export const useCountries = ({ idCountry, currentPage, pageSize }: Options) => {
+export const useCountries = ({
+    idCountry,
+    currentPage,
+    pageSize,
+    searchBy,
+    searchTerm,
+}: Options) => {
     const countries = useQuery({
         queryKey: ["countries", currentPage],
-        queryFn: () => countriesService.getCountries(currentPage,pageSize),
+        queryFn: () => countriesService.getCountries(currentPage, pageSize),
         retry: 1,
         refetchOnWindowFocus: false,
     });
@@ -24,5 +31,13 @@ export const useCountries = ({ idCountry, currentPage, pageSize }: Options) => {
         refetchOnWindowFocus: false,
     });
 
-    return { countries, country };
+    // Consulta para buscar países usando un término de búsqueda y un filtro
+    const searchCountries = useQuery({
+        queryKey: ["searchCountries", searchTerm, searchBy],
+        queryFn: () => countriesService.searchCountries(searchTerm!, searchBy!),
+        retry: 1,
+        enabled: !!searchTerm, // Solo activa esta consulta si hay un término de búsqueda
+        refetchOnWindowFocus: false,
+    });
+    return { countries, country, searchCountries };
 };

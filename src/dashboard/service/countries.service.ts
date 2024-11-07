@@ -8,11 +8,27 @@ import {
 
 const URL = "/countries";
 
-export const getCountries = async (currentPage: number = 0, pageSize: number =10) => {
+export const getCountries = async (
+    currentPage: number = 0,
+    pageSize: number = 10
+) => {
     try {
         const { data } = await httpClient<CountryResponse>(
             `${URL}?page=${currentPage}&size=${pageSize}`
         );
+        return data;
+    } catch (error) {
+        if (isAxiosError(error) && error.response) {
+            throw new Error(error.response.data.message);
+        }
+    }
+};
+
+
+export const searchCountries = async (searchTerm: string, searchBy: string) => {
+    
+    try {
+        const { data } = await httpClient<BaseCountry[]>(`${URL}/search?searchTerm=${searchTerm}&searchBy=${searchBy}`);
         return data;
     } catch (error) {
         if (isAxiosError(error) && error.response) {
