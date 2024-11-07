@@ -1,5 +1,5 @@
 import { useForm } from "react-hook-form";
-import { useAppStore } from "../../../shared";
+import { Loader, useAppStore } from "../../../shared";
 import { UserFormInputs } from "../../../shared/interfaces/user.interface";
 import { useUser } from "../../hooks/user/useUsers";
 import { useUserMutation } from "../../hooks/user/useUsersMutation";
@@ -8,8 +8,8 @@ import { UserForm } from "../../components/user/UserForm";
 
 export const MyAccountPage = () => {
     const claims = useAppStore((state) => state.claims);
-    const { user } = useUser(claims?.email!);
-    const { updateUserMutation } = useUserMutation({
+    const { user } = useUser({ identifier: claims?.email! });
+    const { updateUserProfileMutation } = useUserMutation({
         redirect: "/dashboard/home",
         identifier: claims?.email!,
     });
@@ -41,16 +41,16 @@ export const MyAccountPage = () => {
 
     const handleForm = (formData: UserFormInputs) => {
         const { password, ...rest } = formData;
-        const formWithId = {
-            idUser: user.data?.id!,
+        const formWithEmail = {
+            email: user.data?.email!,
             formData: {
                 ...rest,
                 password: password ? password : null,
             },
         };
-        updateUserMutation.mutate(formWithId);
+        updateUserProfileMutation.mutate(formWithEmail);
     };
-    if (user.isLoading) return <p>Loading...</p>;
+    if (user.isLoading) return <Loader />;
     return (
         <>
             <div className="mx-auto max-w-3xl g">
@@ -69,10 +69,11 @@ export const MyAccountPage = () => {
                         errors={errors}
                         isCreating={false}
                         showFieldEmail={false}
+                        isUpdatingProfile={true}
                     />
                     <input
                         type="submit"
-                        value="Actualizar usuario"
+                        value="Actualizar perfil"
                         className="bg-green-600 hover:bg-green-700  w-full p-3 text-white uppercase font-bold cursor-pointer transition-colors rounded-md "
                     />
                 </form>

@@ -16,7 +16,6 @@ export const UpdateUserPage = () => {
         identifier: user.data?.id,
     });
 
- 
     const {
         register,
         handleSubmit,
@@ -83,6 +82,7 @@ export const UpdateUserPage = () => {
                             errors={errors}
                             isCreating={false}
                             showFieldEmail={true}
+                            isUpdatingProfile={true}
                         />
                         <input
                             type="submit"

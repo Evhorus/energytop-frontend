@@ -69,6 +69,36 @@ export const useUserMutation = ({ redirect, identifier }: Options) => {
         },
     });
 
+    const updateUserProfileMutation = useMutation({
+        mutationFn: userService.updateProfile,
+        onError: (error: Error) => {
+            showNotification({
+                title: "Error",
+                text: error.message,
+                icon: "error",
+                showConfirmButton: false,
+            });
+        },
+        onSuccess: () => {
+            queryClient.invalidateQueries({
+                queryKey: ["users"],
+            });
+            queryClient.invalidateQueries({
+                queryKey: ["user", identifier],
+            });
+            showNotification({
+                title: "¡Éxito!",
+                text: "Perfil actualizado con éxito.",
+                icon: "success",
+                showConfirmButton: false,
+                timer: 1500,
+                onClose: () => {
+                    navigate(redirect!);
+                },
+            });
+        },
+    });
+
     const deleteUserMutation = useMutation({
         mutationFn: userService.deleteUser,
         onError: (error: Error) => {
@@ -93,5 +123,10 @@ export const useUserMutation = ({ redirect, identifier }: Options) => {
         },
     });
 
-    return { deleteUserMutation, createUserMutation, updateUserMutation };
+    return {
+        deleteUserMutation,
+        createUserMutation,
+        updateUserMutation,
+        updateUserProfileMutation,
+    };
 };

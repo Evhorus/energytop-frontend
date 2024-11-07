@@ -1,5 +1,5 @@
 import { Link, Navigate, useParams } from "react-router-dom";
-import { useAppStore } from "../../../../shared";
+import { Loader, useAppStore } from "../../../../shared";
 import { useRenewableEnergies } from "../../../hooks/renewable-energy/useRenewableEnergies";
 import { useRenewableEnergyMutation } from "../../../hooks/renewable-energy/useRenewableEnergyMutation";
 import { RenewableEnergyFormInputs } from "../../../interfaces/renewable-energies/renewable-energy.interface";
@@ -15,7 +15,7 @@ export const UpdateRenewableEnergyPage = () => {
 
     console.log(renewableEnergy.data);
     const { updateRenewableEnergyMutation } = useRenewableEnergyMutation({
-        redirect: "/dashboard/energy-management/renewable-energy",
+        redirect: "/dashboard/energy-management/renewable-energies",
         idRenewableEnergy: renewableEnergy.data?.id,
     });
 
@@ -54,7 +54,7 @@ export const UpdateRenewableEnergyPage = () => {
         updateRenewableEnergyMutation.mutate(formWithId);
     };
 
-    if (renewableEnergy.isLoading) return <p>Loading...</p>;
+    if (renewableEnergy.isLoading) return <Loader/>;
     if (!userClaimsJwt?.isAdmin) return <Navigate to="/dashboard/home" />;
     return (
         <>
@@ -83,7 +83,7 @@ export const UpdateRenewableEnergyPage = () => {
                     <RenewableEnergyForm register={register} errors={errors} />
                     <input
                         type="submit"
-                        value="Crear energia renovable"
+                        value="Modificar Registro"
                         className="bg-green-600 hover:bg-green-700  w-full p-3 text-white uppercase font-bold cursor-pointer transition-colors rounded-md "
                     />
                 </form>

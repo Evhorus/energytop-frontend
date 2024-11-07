@@ -1,13 +1,20 @@
-import { Link } from "react-router-dom";
+import { Link, Navigate } from "react-router-dom";
 import { ListItemUsers, useUser } from "../../";
 import { useAppStore } from "../../../shared/store/useAppStore";
 import { useState } from "react";
+import { Loader } from "../../../shared";
+// import { PaginationControls } from "../../components/PaginationControls";
 export const ListUsersPage = () => {
     const userClaimsJwt = useAppStore((state) => state.claims);
-    const { users } = useUser();
+    // const [currentPage, setCurrentPage] = useState(0);
+
     const [searchTerm, setSearchTerm] = useState("");
-    const [searchBy, setSearchBy] = useState("countryName");
-    if (users.isLoading) return <div>Loading...</div>;
+    const [searchBy, setSearchBy] = useState("");
+
+    const { users, searchUsers } = useUser({ searchTerm, searchBy });
+    if (users.isLoading) return <Loader />;
+    if (!users.data) return null;
+    // const { pageSize, totalPages, content } = users.data;
     const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setSearchTerm(e.target.value);
     };
@@ -15,6 +22,7 @@ export const ListUsersPage = () => {
     const handleSelectChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
         setSearchBy(e.target.value);
     };
+    if (!userClaimsJwt?.isAdmin) return <Navigate to="/dashboard/home" />;
     return (
         <div className="relative flex flex-col w-full h-full text-gray-700 bg-white shadow-xl rounded-xl p-2 overflow-y-auto">
             <div className="relative mx-4 mt-4 overflow-hidden bg-white rounded-none">
@@ -34,7 +42,6 @@ export const ListUsersPage = () => {
                                 <option value="">
                                     Selecciona un criterio de búsqueda
                                 </option>
-                                <option value="fullName">Nombre</option>
                                 <option value="email">
                                     Correo electronico
                                 </option>
@@ -47,9 +54,7 @@ export const ListUsersPage = () => {
                                     onChange={handleSearchChange}
                                     className="w-full px-2 py-2 text-base border rounded-lg text-blue-gray-700"
                                     placeholder={
-                                        searchBy === "fullName"
-                                            ? "Buscar por nombre"
-                                            : searchBy === "email"
+                                        searchBy === "email"
                                             ? "Buscar por correo electrónico"
                                             : "Buscar"
                                     }
@@ -102,12 +107,43 @@ export const ListUsersPage = () => {
                         </tr>
                     </thead>
                     <tbody>
-                        {users.data?.map((user) => (
-                            <ListItemUsers key={user.id} user={user} />
-                        ))}
+                        {searchTerm ? (
+                            searchUsers.data?.length === 0 ? (
+                                <tr>
+                                    <td
+                                        colSpan={5}
+                                        className="text-center text-gray-500 py-4"
+                                    >
+                                        <span className="font-semibold text-xl">
+                                            Ups, no encontramos países
+                                        </span>
+                                        <p className="text-sm text-gray-400">
+                                            No hay países con ese nombre o no
+                                            existe.
+                                        </p>
+                                    </td>
+                                </tr>
+                            ) : (
+                                searchUsers.data?.map((user, index) => (
+                                    <ListItemUsers key={user.id} user={user} />
+                                ))
+                            )
+                        ) : (
+                            users.data.map((user, index) => (
+                                <ListItemUsers key={user.id} user={user} />
+                            ))
+                        )}
                     </tbody>
                 </table>
             </div>
+            {/* {!searchTerm && (
+                <PaginationControls
+                    currentPage={currentPage}
+                    totalPages={totalPages}
+                    handleNextPage={handleNextPage}
+                    handlePreviousPage={handlePreviousPage}
+                />
+            )} */}
         </div>
     );
 };

@@ -1,10 +1,12 @@
 import { useForm } from "react-hook-form";
 import { useRenewableEnergyMutation } from "../../../hooks/renewable-energy/useRenewableEnergyMutation";
 import { RenewableEnergyFormInputs } from "../../../interfaces/renewable-energies/renewable-energy.interface";
-import { Link } from "react-router-dom";
+import { Link, Navigate } from "react-router-dom";
 import { RenewableEnergyForm } from "../../../components/RenewableEnergy/RenewableEnergyForm";
+import { useAppStore } from "../../../../shared";
 
 export const CreateRenewableEnergyPage = () => {
+    const userClaimsJwt = useAppStore((state) => state.claims);
     const { createRenewableEnergyMutation } = useRenewableEnergyMutation({
         redirect: "/dashboard/energy-management/renewable-energies",
     });
@@ -35,6 +37,7 @@ export const CreateRenewableEnergyPage = () => {
         createRenewableEnergyMutation.mutate(formData);
     };
 
+    if (!userClaimsJwt?.isAdmin) return <Navigate to="/dashboard/home" />;
     return (
         <>
             <div className="max-w-3xl mx-auto">

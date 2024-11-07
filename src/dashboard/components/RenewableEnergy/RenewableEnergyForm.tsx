@@ -17,8 +17,8 @@ export const RenewableEnergyForm = ({ register, errors }: Props) => {
         (_, i) => 2015 + i
     );
 
-    if (energyTypes.isLoading) return <Loader />;
     if (countries.isLoading) return <Loader />;
+    if (energyTypes.isLoading) return <Loader />;
     if (countries.data?.content && energyTypes.data?.content)
         return (
             <>

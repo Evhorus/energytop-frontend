@@ -10,10 +10,16 @@ export const EnergyTypesListPage = () => {
     const userClaimsJwt = useAppStore((state) => state.claims);
     const [currentPage, setCurrentPage] = useState(0);
     const [searchTerm, setSearchTerm] = useState("");
+    const [searchBy, setSearchBy] = useState("");
     const { energyTypes } = useEnergyTypes({
         currentPage,
     });
-    const [searchBy, setSearchBy] = useState("");
+
+    const { searchEnergyTypes } = useEnergyTypes({
+        searchTerm,
+        searchBy,
+    });
+
     if (energyTypes.isLoading) return <Loader />;
     if (!energyTypes.data) return null;
     const { pageSize, totalPages, content } = energyTypes.data;
@@ -53,7 +59,7 @@ export const EnergyTypesListPage = () => {
                                 <option value="">
                                     Selecciona un criterio de búsqueda
                                 </option>
-                                <option value="countryName">
+                                <option value="energyName">
                                     Tipo de energia
                                 </option>
                             </select>
@@ -115,22 +121,58 @@ export const EnergyTypesListPage = () => {
                         </tr>
                     </thead>
                     <tbody>
-                        {content.map((energyType, index) => (
-                            <ListItemEnergyTypes
-                                key={energyType.id}
-                                energyType={energyType}
-                                index={index + currentPage * pageSize + 1}
-                            />
-                        ))}
+                        {searchTerm ? (
+                            searchEnergyTypes.data?.length === 0 ? (
+                                <tr>
+                                    <td
+                                        colSpan={5}
+                                        className="text-center text-gray-500 py-4"
+                                    >
+                                        <span className="font-semibold text-xl">
+                                            Ups, no encontramos tipos de
+                                            energías
+                                        </span>
+                                        <p className="text-sm text-gray-400">
+                                            No hay tipos de energías con ese
+                                            nombre o no existe.
+                                        </p>
+                                    </td>
+                                </tr>
+                            ) : (
+                                searchEnergyTypes.data?.map(
+                                    (energyType, index) => (
+                                        <ListItemEnergyTypes
+                                            key={energyType.id}
+                                            energyType={energyType}
+                                            index={
+                                                index +
+                                                currentPage * pageSize +
+                                                1
+                                            }
+                                        />
+                                    )
+                                )
+                            )
+                        ) : (
+                            content.map((energyType, index) => (
+                                <ListItemEnergyTypes
+                                    key={energyType.id}
+                                    energyType={energyType}
+                                    index={index + currentPage * pageSize + 1}
+                                />
+                            ))
+                        )}
                     </tbody>
                 </table>
             </div>
-            <PaginationControls
-                currentPage={currentPage}
-                totalPages={totalPages}
-                handleNextPage={handleNextPage}
-                handlePreviousPage={handlePreviousPage}
-            />
+            {!searchTerm && (
+                <PaginationControls
+                    currentPage={currentPage}
+                    totalPages={totalPages}
+                    handleNextPage={handleNextPage}
+                    handlePreviousPage={handlePreviousPage}
+                />
+            )}
         </div>
     );
 };

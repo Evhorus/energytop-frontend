@@ -1,5 +1,5 @@
 import { Link, Navigate, useParams } from "react-router-dom";
-import { useAppStore } from "../../../../shared";
+import { Loader, useAppStore } from "../../../../shared";
 import { useCountries } from "../../../hooks/countries/useCountries";
 import { useCountriesMutation } from "../../../hooks/countries/useCountriesMutation";
 import { CountryFormInputs } from "../../../interfaces/countries/countries.interface";
@@ -48,14 +48,12 @@ export const UpdateCountryPage = () => {
         updateCountryMutation.mutate(formWithId);
     };
 
-    if (country.isLoading) return <p>Loading...</p>;
+    if (country.isLoading) return <Loader />;
     if (!userClaimsJwt?.isAdmin) return <Navigate to="/dashboard/home" />;
     return (
         <>
             <div className="max-w-3xl mx-auto">
-                <h1 className="text-4xl font-bold">
-                    Actualizar País
-                </h1>
+                <h1 className="text-4xl font-bold">Actualizar País</h1>
                 <p className="text-2xl font-light text-gray-500 mt-5">
                     Modifica el siguiente formulario para actualizar el país
                 </p>

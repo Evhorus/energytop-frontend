@@ -6,9 +6,17 @@ interface Options {
     idEnergyType?: BaseEnergyType["id"];
     currentPage?: number;
     pageSize?: number;
+    searchTerm?: string;
+    searchBy?: string;
 }
 
-export const useEnergyTypes = ({ currentPage, idEnergyType,pageSize }: Options) => {
+export const useEnergyTypes = ({
+    currentPage,
+    idEnergyType,
+    pageSize,
+    searchBy,
+    searchTerm,
+}: Options) => {
     const energyTypes = useQuery({
         queryKey: ["energyTypes", currentPage],
         queryFn: () => energyTypesService.getEnergyTypes(currentPage, pageSize),
@@ -24,5 +32,14 @@ export const useEnergyTypes = ({ currentPage, idEnergyType,pageSize }: Options) 
         refetchOnWindowFocus: false,
     });
 
-    return { energyTypes, energyType };
+    const searchEnergyTypes = useQuery({
+        queryKey: ["searchCountries", searchTerm, searchBy],
+        queryFn: () =>
+            energyTypesService.searchEnergyTypes(searchTerm!, searchBy!),
+        retry: 1,
+        enabled: !!searchTerm, // Solo activa esta consulta si hay un término de búsqueda
+        refetchOnWindowFocus: false,
+    });
+
+    return { energyTypes, energyType, searchEnergyTypes };
 };

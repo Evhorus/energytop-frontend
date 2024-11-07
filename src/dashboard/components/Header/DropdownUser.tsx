@@ -8,7 +8,7 @@ import { useUser } from "../../hooks/user/useUsers";
 const DropdownUser = () => {
     const logout = useAppStore((state) => state.logout);
     const claims = useAppStore((state) => state.claims);
-    const { user } = useUser(claims?.email!);
+    const { user } = useUser({ identifier: claims?.email! });
     const [dropdownOpen, setDropdownOpen] = useState(false);
     return (
         <ClickOutside

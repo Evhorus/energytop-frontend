@@ -1,5 +1,5 @@
 import { Link, Navigate, useParams } from "react-router-dom";
-import { useAppStore } from "../../../../shared";
+import { Loader, useAppStore } from "../../../../shared";
 import { useEnergyTypes } from "../../../hooks/energy-types/useEnergyTypes";
 import { useEnergyTypesMutation } from "../../../hooks/energy-types/useEnergyTypesMutation";
 import { useForm } from "react-hook-form";
@@ -46,7 +46,7 @@ export const UpdateEnergyTypePage = () => {
         updateEnergyTypeMutation.mutate(formWithId);
     };
 
-    if (energyType.isLoading) return <p>Loading...</p>;
+    if (energyType.isLoading) return <Loader />;
     if (!userClaimsJwt?.isAdmin) return <Navigate to="/dashboard/home" />;
     return (
         <>

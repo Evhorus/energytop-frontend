@@ -37,7 +37,18 @@ export const findEnergyTypeById = async (
         }
     }
 };
-
+export const searchEnergyTypes = async (searchTerm: string, searchBy: string) => {
+    try {
+        const { data } = await httpClient<BaseEnergyType[]>(
+            `${URL}/search?searchTerm=${searchTerm}&searchBy=${searchBy}`
+        );
+        return data;
+    } catch (error) {
+        if (isAxiosError(error) && error.response) {
+            throw new Error(error.response.data.message);
+        }
+    }
+};
 export const createEnergyType = async (newEnergyType: EnergyTypeFormInputs) => {
     try {
         const { data } = await httpClient.post(URL, newEnergyType);

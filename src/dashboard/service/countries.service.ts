@@ -24,19 +24,6 @@ export const getCountries = async (
     }
 };
 
-
-export const searchCountries = async (searchTerm: string, searchBy: string) => {
-    
-    try {
-        const { data } = await httpClient<BaseCountry[]>(`${URL}/search?searchTerm=${searchTerm}&searchBy=${searchBy}`);
-        return data;
-    } catch (error) {
-        if (isAxiosError(error) && error.response) {
-            throw new Error(error.response.data.message);
-        }
-    }
-};
-
 export const findCountryById = async (idCountry: BaseCountry["id"]) => {
     try {
         const { data } = await httpClient.get<BaseCountry>(
@@ -49,7 +36,18 @@ export const findCountryById = async (idCountry: BaseCountry["id"]) => {
         }
     }
 };
-
+export const searchCountries = async (searchTerm: string, searchBy: string) => {
+    try {
+        const { data } = await httpClient<BaseCountry[]>(
+            `${URL}/search?searchTerm=${searchTerm}&searchBy=${searchBy}`
+        );
+        return data;
+    } catch (error) {
+        if (isAxiosError(error) && error.response) {
+            throw new Error(error.response.data.message);
+        }
+    }
+};
 export const createCountry = async (newCountry: CountryFormInputs) => {
     try {
         const { data } = await httpClient.post(URL, newCountry);

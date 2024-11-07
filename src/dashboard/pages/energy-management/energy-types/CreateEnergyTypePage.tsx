@@ -1,10 +1,12 @@
 import { useForm } from "react-hook-form";
 import { useEnergyTypesMutation } from "../../../hooks/energy-types/useEnergyTypesMutation";
 import { EnergyTypeFormInputs } from "../../../interfaces/energy-types/energy-type.interface";
-import { Link } from "react-router-dom";
+import { Link, Navigate } from "react-router-dom";
 import { EnergyTypeForm } from "../../../components/EnergyTypes/EnergyTypeForm";
+import { useAppStore } from "../../../../shared";
 
 export const CreateEnergyTypePage = () => {
+    const userClaimsJwt = useAppStore((state) => state.claims);
     const { createEnergyTypeMutation } = useEnergyTypesMutation({
         redirect: "/dashboard/energy-management/energy-types",
     });
@@ -24,6 +26,8 @@ export const CreateEnergyTypePage = () => {
     const handleForm = (formData: EnergyTypeFormInputs) =>
         createEnergyTypeMutation.mutate(formData);
 
+
+    if (!userClaimsJwt?.isAdmin) return <Navigate to="/dashboard/home" />;
     return (
         <>
             <div className="max-w-3xl mx-auto">

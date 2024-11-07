@@ -1,6 +1,7 @@
 import { isAxiosError } from "axios";
 import { httpClient } from "../../shared";
 import {
+    BaseUser,
     UserFormInputs,
     UserResponse,
 } from "../../shared/interfaces/user.interface";
@@ -19,7 +20,8 @@ export const createUser = async (newUser: UserFormInputs) => {
 };
 
 interface Options {
-    idUser: UserResponse["id"];
+    email?: string
+    idUser?: UserResponse["id"];
     formData: UserFormInputs;
 }
 
@@ -30,6 +32,20 @@ export const updateUser = async ({ idUser, formData }: Options) => {
     } catch (error) {
         if (isAxiosError(error) && error.response) {
             throw new Error(error.response.data.message);
+        }
+    }
+};
+
+export const updateProfile = async ({ email, formData }: Options) => {
+
+    console.log(`${URL}/profile/${email}`, formData)
+    try {
+        const { data } = await httpClient.patch(`${URL}/profile/${email}`, formData);
+        return data;
+    } catch (error) {
+        if (isAxiosError(error) && error.response) {
+            throw new Error(error.response.data.message);
+           
         }
     }
 };
@@ -54,7 +70,19 @@ export const findUserById = async (identifier: UserResponse["id"] | UserResponse
         }
     }
 };
-
+export const searchUsers = async (searchTerm: string, searchBy: string) => {
+    try {
+        const { data } = await httpClient<UserResponse[]>(
+            `${URL}/search?searchTerm=${searchTerm}&searchBy=${searchBy}`
+        );
+        
+        return data;
+    } catch (error) {
+        if (isAxiosError(error) && error.response) {
+            throw new Error(error.response.data.message);
+        }
+    }
+};
 
 export const deleteUser = async (id: number) => {
     try {

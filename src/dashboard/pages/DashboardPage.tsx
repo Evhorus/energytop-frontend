@@ -11,8 +11,10 @@ import { FaDatabase } from "react-icons/fa";
 import { FaUsers } from "react-icons/fa";
 // import { TopCountryEnergy } from "../components/TopChannels";
 import { Link } from "react-router-dom";
+import { useAppStore } from "../../shared";
 export const DashboardPage = () => {
-    const { users } = useUser();
+    const claims = useAppStore((state) => state.claims);
+    const { users } = useUser({});
     const { energyTypes } = useEnergyTypes({ currentPage: 0, pageSize: 100 });
     const { renewableEnergies } = useRenewableEnergies({
         currentPage: 0,
@@ -48,14 +50,16 @@ export const DashboardPage = () => {
                         <IoMdGlobe size={25} />
                     </CardDataStats>
                 </Link>
-                <Link to="/dashboard/users">
-                    <CardDataStats
-                        title="Total Usuarios"
-                        total={users.data?.length!}
-                    >
-                        <FaUsers size={25} />
-                    </CardDataStats>
-                </Link>
+                {claims?.isAdmin && (
+                    <Link to="/dashboard/users">
+                        <CardDataStats
+                            title="Total Usuarios"
+                            total={users.data?.length!}
+                        >
+                            <FaUsers size={25} />
+                        </CardDataStats>
+                    </Link>
+                )}
             </div>
             {/* <div className="col-span-12 xl:col-span-6">
                 <TopCountryEnergy />

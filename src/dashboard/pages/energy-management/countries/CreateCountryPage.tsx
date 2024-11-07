@@ -1,10 +1,12 @@
 import { useForm } from "react-hook-form";
 import { useCountriesMutation } from "../../../hooks/countries/useCountriesMutation";
 import { CountryFormInputs } from "../../../interfaces/countries/countries.interface";
-import { Link } from "react-router-dom";
+import { Link, Navigate } from "react-router-dom";
 import { CountryForm } from "../../../components/Countries/CountryForm";
+import { useAppStore } from "../../../../shared";
 
 export const CreateCountryPage = () => {
+    const userClaimsJwt = useAppStore((state) => state.claims);
     const { createCountryMutation } = useCountriesMutation({
         redirect: "/dashboard/energy-management/countries",
     });
@@ -24,6 +26,8 @@ export const CreateCountryPage = () => {
 
     const handleForm = (formData: CountryFormInputs) =>
         createCountryMutation.mutate(formData);
+
+    if (!userClaimsJwt?.isAdmin) return <Navigate to="/dashboard/home" />;
     return (
         <>
             <div className="max-w-3xl mx-auto">

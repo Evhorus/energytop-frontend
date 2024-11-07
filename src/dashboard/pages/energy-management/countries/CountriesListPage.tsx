@@ -9,13 +9,11 @@ import { ListItemCountry } from "../../../components/Countries/ListItemCountry";
 export const CountriesListPage = () => {
     const userClaimsJwt = useAppStore((state) => state.claims);
     const [currentPage, setCurrentPage] = useState(0);
-    const { countries } = useCountries({
-        currentPage,
-    });
+
     const [searchTerm, setSearchTerm] = useState("");
     const [searchBy, setSearchBy] = useState("");
-
-    const { searchCountries } = useCountries({
+    const { countries, searchCountries } = useCountries({
+        currentPage,
         searchTerm,
         searchBy,
     });
