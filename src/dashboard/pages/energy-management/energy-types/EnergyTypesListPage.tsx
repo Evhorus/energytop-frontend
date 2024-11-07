@@ -70,7 +70,7 @@ export const EnergyTypesListPage = () => {
                                     onChange={handleSearchChange}
                                     className="w-full px-2 py-2 text-base border rounded-lg text-blue-gray-700"
                                     placeholder={
-                                        searchBy === "countryName"
+                                        searchBy === "energyName"
                                             ? "Buscar por tipo de energia"
                                             : "Buscar"
                                     }
