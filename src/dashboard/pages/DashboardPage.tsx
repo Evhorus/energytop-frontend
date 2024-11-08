@@ -25,15 +25,6 @@ export const DashboardPage = () => {
     return (
         <>
             <div className="grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-6 xl:grid-cols-4 2xl:gap-7.5 pb-5">
-                <Link to="/dashboard/energy-management/energy-types">
-                    <CardDataStats
-                        title="Total Tipo de Energias Renovables"
-                        total={energyTypes.data?.content.length!}
-                    >
-                        <FaBolt size={25} />
-                    </CardDataStats>
-                </Link>
-
                 <Link to="/dashboard/energy-management/renewable-energies">
                     <CardDataStats
                         title="Total registros de energias renovables"
@@ -42,9 +33,17 @@ export const DashboardPage = () => {
                         <FaDatabase size={25} />
                     </CardDataStats>
                 </Link>
+                <Link to="/dashboard/energy-management/energy-types">
+                    <CardDataStats
+                        title="Total Tipo de Energias Renovables"
+                        total={energyTypes.data?.content.length!}
+                    >
+                        <FaBolt size={25} />
+                    </CardDataStats>
+                </Link>
                 <Link to="/dashboard/energy-management/countries">
                     <CardDataStats
-                        title="Total de paises"
+                        title="Total de Paises"
                         total={countries.data?.content.length!}
                     >
                         <IoMdGlobe size={25} />

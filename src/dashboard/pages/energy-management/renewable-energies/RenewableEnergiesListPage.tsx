@@ -128,12 +128,12 @@ export const RenewableEnergiesListPage = () => {
                             </th>
                             <th className="p-4 border-y border-blue-gray-100 bg-blue-gray-50/50">
                                 <p className="text-base font-normal text-blue-gray-900 opacity-70">
-                                    Producción
+                                    Producción (MW)
                                 </p>
                             </th>
                             <th className="p-4 border-y border-blue-gray-100 bg-blue-gray-50/50">
                                 <p className="text-base font-normal text-blue-gray-900 opacity-70">
-                                    Consumo
+                                    Consumo (MW)
                                 </p>
                             </th>
                             {userClaimsJwt?.isAdmin && (

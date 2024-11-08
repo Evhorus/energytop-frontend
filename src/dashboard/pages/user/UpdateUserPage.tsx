@@ -10,7 +10,7 @@ export const UpdateUserPage = () => {
     const userClaimsJwt = useAppStore((state) => state.claims);
     const params = useParams();
     const idUser = +params.id!;
-    const { user } = useUser(idUser);
+    const { user } = useUser({ identifier: idUser });
     const { updateUserMutation } = useUserMutation({
         redirect: "/dashboard/users",
         identifier: user.data?.id,
