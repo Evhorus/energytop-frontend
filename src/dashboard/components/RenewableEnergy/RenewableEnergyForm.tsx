@@ -13,8 +13,8 @@ export const RenewableEnergyForm = ({ register, errors }: Props) => {
     const { countries } = useCountries({ currentPage: 0, pageSize: 200 });
     const currentYear = new Date().getFullYear();
     const years = Array.from(
-        { length: currentYear - 2015 + 1 },
-        (_, i) => 2015 + i
+        { length: currentYear - 2010 + 1 },
+        (_, i) => 2010 + i
     );
 
     if (countries.isLoading) return <Loader />;

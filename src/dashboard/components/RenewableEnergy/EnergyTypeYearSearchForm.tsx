@@ -14,8 +14,8 @@ export const EnergyTypeYearSearchForm = () => {
 
     const currentYear = new Date().getFullYear();
     const years = Array.from(
-        { length: currentYear - 2015 + 1 },
-        (_, i) => 2015 + i
+        { length: currentYear - 2010 + 1 },
+        (_, i) => 2010 + i
     );
 
     const [searchParams, setSearchParams] = useState({
@@ -27,7 +27,7 @@ export const EnergyTypeYearSearchForm = () => {
         useForm<AdvancedEnergySearchFormInputs>({
             defaultValues: {
                 energyTypeName: "",
-                year: 2015,
+                year: 2024,
             },
         });
     const selectedEnergyType = watch("energyTypeName");
