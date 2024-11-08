@@ -36,7 +36,7 @@ export const useUser = ({
     });
 
     const searchUsers = useQuery({
-        queryKey: ["searchUsers"],
+        queryKey: ["searchUsers",searchTerm,searchBy],
         queryFn: () => userService.searchUsers(searchTerm!, searchBy!),
         retry: 1,
         enabled: !!searchTerm, // Solo activa esta consulta si hay un término de búsqueda

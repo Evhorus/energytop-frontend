@@ -33,7 +33,7 @@ export const useEnergyTypes = ({
     });
 
     const searchEnergyTypes = useQuery({
-        queryKey: ["searchEnergyTypes"],
+        queryKey: ["searchEnergyTypes",searchTerm,searchBy],
         queryFn: () =>
             energyTypesService.searchEnergyTypes(searchTerm!, searchBy!),
         retry: 1,

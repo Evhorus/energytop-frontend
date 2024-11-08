@@ -7,7 +7,7 @@ interface Options {
     currentPage?: number;
     pageSize?: number;
     searchTerm?: string;
-    searchBy?: string; 
+    searchBy?: string;
 }
 export const useCountries = ({
     idCountry,
@@ -33,7 +33,7 @@ export const useCountries = ({
 
     // Consulta para buscar países usando un término de búsqueda y un filtro
     const searchCountries = useQuery({
-        queryKey: ["searchCountries"],
+        queryKey: ["searchCountries", searchTerm, searchBy],
         queryFn: () => countriesService.searchCountries(searchTerm!, searchBy!),
         retry: 1,
         enabled: !!searchTerm, // Solo activa esta consulta si hay un término de búsqueda
