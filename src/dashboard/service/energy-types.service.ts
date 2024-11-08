@@ -13,7 +13,7 @@ export const getEnergyTypes = async (
 ) => {
     try {
         const { data } = await httpClient<EnergyTypeResponse>(
-            `${URL}?page=${currentPage}&size=${pageSize}`
+            `${URL}?page=${currentPage}&size=${pageSize}&sort=energyName,asc`
         );
         return data;
     } catch (error) {

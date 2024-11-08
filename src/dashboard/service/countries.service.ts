@@ -14,7 +14,7 @@ export const getCountries = async (
 ) => {
     try {
         const { data } = await httpClient<CountryResponse>(
-            `${URL}?page=${currentPage}&size=${pageSize}`
+            `${URL}?page=${currentPage}&size=${pageSize}&sort=countryName,asc`
         );
         return data;
     } catch (error) {
