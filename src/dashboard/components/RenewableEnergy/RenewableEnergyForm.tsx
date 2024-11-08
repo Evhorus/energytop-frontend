@@ -112,7 +112,7 @@ export const RenewableEnergyForm = ({ register, errors }: Props) => {
                         htmlFor="production"
                         className="text-sm uppercase font-bold"
                     >
-                        Producción (kWh)
+                        Producción (MW)
                     </label>
                     <input
                         id="production"
@@ -134,7 +134,7 @@ export const RenewableEnergyForm = ({ register, errors }: Props) => {
                         htmlFor="consumption"
                         className="text-sm uppercase font-bold"
                     >
-                        Consumo (kWh)
+                        Consumo (MW)
                     </label>
                     <input
                         id="consumption"

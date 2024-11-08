@@ -22,7 +22,12 @@ export const ListUsersPage = () => {
     };
 
     const handleSelectChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-        setSearchBy(e.target.value);
+        const value = e.target.value;
+        setSearchBy(value);
+
+        if (!value) {
+            setSearchTerm(""); // Restablece los datos
+        }
     };
     if (!userClaimsJwt?.isAdmin) return <Navigate to="/dashboard/home" />;
     return (

@@ -9,7 +9,7 @@ import { Loader } from "../../../shared";
 export const EnergyTypeYearSearchForm = () => {
     const [isButtonVisible, setButtonVisible] = useState(false);
     const [fadeIn, setFadeIn] = useState(false);
-    const [hasSearched, setHasSearched] = useState(false); // Estado para controlar si se hizo la búsqueda
+    const [hasSearched, setHasSearched] = useState(false);
     const { energyTypes } = useEnergyTypes({ currentPage: 0 });
 
     const currentYear = new Date().getFullYear();
@@ -35,10 +35,10 @@ export const EnergyTypeYearSearchForm = () => {
     useEffect(() => {
         if (selectedEnergyType) {
             setButtonVisible(true);
-            setTimeout(() => setFadeIn(true), 50); // Inicia la animación después de que se muestra el botón
+            setTimeout(() => setFadeIn(true), 50);
         } else {
             setFadeIn(false);
-            setTimeout(() => setButtonVisible(false), 300); // Oculta el botón después de la animación
+            setTimeout(() => setButtonVisible(false), 300);
         }
     }, [selectedEnergyType]);
 
@@ -52,9 +52,17 @@ export const EnergyTypeYearSearchForm = () => {
         const { energyTypeName, year } = formData;
         if (energyTypeName && year) {
             setSearchParams({ energyTypeName, year });
-            setHasSearched(true); // Marca como "buscado" cuando el formulario es enviado
+            setHasSearched(true);
         }
     };
+
+    // Calcula la producción total sumando todas las producciones
+    const totalProduction = totalRenewableEnergy.data
+        ? totalRenewableEnergy.data.reduce(
+              (acc, item) => acc + (item.totalProduction || 0),
+              0
+          )
+        : 0;
 
     return (
         <>
@@ -102,7 +110,7 @@ export const EnergyTypeYearSearchForm = () => {
                                 ))}
                             </select>
                         </div>
-                        {isButtonVisible && ( // Solo mostrar el botón si isButtonVisible es verdadero
+                        {isButtonVisible && (
                             <div
                                 className={`mt-4 md:mt-0 transition-all duration-300 ${
                                     fadeIn
@@ -128,8 +136,8 @@ export const EnergyTypeYearSearchForm = () => {
                     <Loader />
                 </div>
             )}
-            {/* Tabla de Resultados */}
             {hasSearched &&
+            selectedEnergyType &&
             totalRenewableEnergy.data &&
             totalRenewableEnergy.data.length > 0 ? (
                 <div className="mt-8 max-w-full mx-auto bg-white shadow-lg rounded-lg overflow-hidden">
@@ -153,7 +161,7 @@ export const EnergyTypeYearSearchForm = () => {
                                         Año
                                     </th>
                                     <th className="px-6 py-3 text-left text-gray-700 font-semibold uppercase tracking-wider">
-                                        Producción Total
+                                        Producción (MW)
                                     </th>
                                 </tr>
                             </thead>
@@ -189,6 +197,19 @@ export const EnergyTypeYearSearchForm = () => {
                                     )
                                 )}
                             </tbody>
+                            <tfoot>
+                                <tr className="bg-gray-100">
+                                    <td
+                                        colSpan={4}
+                                        className="px-6 py-4 text-right font-bold text-gray-700"
+                                    >
+                                        Producción Total :
+                                    </td>
+                                    <td className="px-6 py-4 text-gray-800 font-medium">
+                                        {totalProduction.toFixed(2)} (MW)
+                                    </td>
+                                </tr>
+                            </tfoot>
                         </table>
                     </div>
                 </div>
@@ -206,4 +227,3 @@ export const EnergyTypeYearSearchForm = () => {
         </>
     );
 };
-

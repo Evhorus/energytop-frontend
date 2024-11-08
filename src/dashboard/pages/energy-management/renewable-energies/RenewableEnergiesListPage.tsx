@@ -39,7 +39,12 @@ export const RenewableEnergiesListPage = () => {
     };
 
     const handleSelectChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-        setSearchBy(e.target.value);
+        const value = e.target.value;
+        setSearchBy(value);
+
+        if (!value) {
+            setSearchTerm(""); // Restablece los datos
+        }
     };
     return (
         <div className="relative flex flex-col w-full h-full text-gray-700 bg-white shadow-xl rounded-xl p-2 overflow-y-auto">
@@ -181,7 +186,6 @@ export const RenewableEnergiesListPage = () => {
                                     key={renewableEnergy.id}
                                     renewableEnergy={renewableEnergy}
                                     index={index + currentPage * pageSize + 1}
-                                   
                                 />
                             ))
                         )}

@@ -6,7 +6,7 @@ export const AdvancedEnergySearchPage = () => {
         { value: "", label: "Selecciona..." },
         {
             value: "totalProductionBySourceAndYear",
-            label: "Producción total por tipo de fuente y año (agrupada por regiones | países)",
+            label: "Buscar producción total por tipo de energía y año",
         },
         // {
         //     value: "renewablePercentageByCountry",
