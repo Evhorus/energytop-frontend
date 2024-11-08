@@ -84,6 +84,9 @@ export const useEnergyTypesMutation = ({ idEnergyType, redirect }: Options) => {
             queryClient.invalidateQueries({
                 queryKey: ["energyTypes"],
             });
+            queryClient.invalidateQueries({
+                queryKey: ["searchEnergyTypes"],
+            });
             showNotification({
                 title: "¡Éxito!",
                 text: "Tipo de energía eliminado con éxito.",

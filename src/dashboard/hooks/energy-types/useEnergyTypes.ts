@@ -25,7 +25,7 @@ export const useEnergyTypes = ({
     });
 
     const energyType = useQuery({
-        queryKey: ["energyType", idEnergyType],
+        queryKey: ["energyTypes", idEnergyType],
         queryFn: () => energyTypesService.findEnergyTypeById(idEnergyType!),
         retry: 1,
         enabled: !!idEnergyType,
@@ -33,7 +33,7 @@ export const useEnergyTypes = ({
     });
 
     const searchEnergyTypes = useQuery({
-        queryKey: ["searchCountries", searchTerm, searchBy],
+        queryKey: ["searchEnergyTypes"],
         queryFn: () =>
             energyTypesService.searchEnergyTypes(searchTerm!, searchBy!),
         retry: 1,

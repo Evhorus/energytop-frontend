@@ -15,7 +15,7 @@ export const ListItemEnergyTypes = ({ energyType, index }: Props) => {
     const userClaimsJwt = useAppStore((state) => state.claims);
     const { energyName, source } = energyType;
 
-    const {deleteEnergyTypeMutation} = useEnergyTypesMutation({})
+    const { deleteEnergyTypeMutation } = useEnergyTypesMutation({});
 
     const handleDeleteEnergyType = (energyTypeId: BaseEnergyType["id"]) => {
         showNotification({
@@ -71,14 +71,20 @@ export const ListItemEnergyTypes = ({ energyType, index }: Props) => {
                         <Link
                             to={`/dashboard/energy-management/energy-types/update-energy-type/${energyType.id}`}
                         >
-                            <FaRegEdit size={25}  className="hover:text-blue-700"/>
+                            <FaRegEdit
+                                size={25}
+                                className="hover:text-blue-700"
+                            />
                         </Link>
                         <button
                             onClick={() =>
                                 handleDeleteEnergyType(energyType.id)
                             }
                         >
-                            <RiDeleteBin5Line size={25} className="hover:text-red-700"/>
+                            <RiDeleteBin5Line
+                                size={25}
+                                className="hover:text-red-700"
+                            />
                         </button>
                     </div>
                 </td>

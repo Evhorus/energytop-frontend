@@ -11,12 +11,7 @@ interface Options {
     searchBy?: string;
 }
 
-export const useCountriesMutation = ({
-    idCountry,
-    redirect,
-    searchBy,
-    searchTerm,
-}: Options) => {
+export const useCountriesMutation = ({ idCountry, redirect }: Options) => {
     const navigate = useNavigate();
     const queryClient = useQueryClient();
 
@@ -92,7 +87,7 @@ export const useCountriesMutation = ({
                 queryKey: ["countries"],
             });
             queryClient.invalidateQueries({
-                queryKey: ["searchCountries", searchTerm, searchBy],
+                queryKey: ["searchCountries"],
             });
             showNotification({
                 title: "¡Éxito!",

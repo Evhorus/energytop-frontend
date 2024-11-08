@@ -9,22 +9,12 @@ import { RiDeleteBin5Line } from "react-icons/ri";
 type Props = {
     index: number;
     country: BaseCountry;
-    searchTerm?: string;
-    searchBy?: string;
 };
-export const ListItemCountry = ({
-    index,
-    country,
-    searchBy,
-    searchTerm,
-}: Props) => {
+export const ListItemCountry = ({ index, country }: Props) => {
     const userClaimsJwt = useAppStore((state) => state.claims);
     const { countryName, countryCode, population } = country;
 
-    const { deleteCountryMutation } = useCountriesMutation({
-        searchBy,
-        searchTerm,
-    });
+    const { deleteCountryMutation } = useCountriesMutation({});
 
     const handleDeleteEnergyType = (energyTypeId: BaseCountry["id"]) => {
         showNotification({

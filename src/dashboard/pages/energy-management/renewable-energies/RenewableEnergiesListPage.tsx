@@ -181,8 +181,7 @@ export const RenewableEnergiesListPage = () => {
                                     key={renewableEnergy.id}
                                     renewableEnergy={renewableEnergy}
                                     index={index + currentPage * pageSize + 1}
-                                    searchTerm={searchTerm}
-                                    searchBy={searchBy}
+                                   
                                 />
                             ))
                         )}

@@ -152,8 +152,6 @@ export const CountriesListPage = () => {
                                         index={
                                             index + currentPage * pageSize + 1
                                         }
-                                        searchTerm={searchTerm}
-                                        searchBy={searchBy}
                                     />
                                 ))
                             )
@@ -163,8 +161,6 @@ export const CountriesListPage = () => {
                                     key={country.id}
                                     country={country}
                                     index={index + currentPage * pageSize + 1}
-                                    searchTerm={searchTerm}
-                                    searchBy={searchBy}
                                 />
                             ))
                         )}

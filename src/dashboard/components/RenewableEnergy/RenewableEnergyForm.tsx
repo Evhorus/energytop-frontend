@@ -24,22 +24,22 @@ export const RenewableEnergyForm = ({ register, errors }: Props) => {
             <>
                 <div className="mb-5 space-y-3">
                     <label
-                        htmlFor="countryName"
+                        htmlFor="energyType"
                         className="text-sm uppercase font-bold"
                     >
-                        Tipo de Fuente
+                        Tipo de Energía
                     </label>
                     <select
-                        id="countryName"
+                        id="energyType"
                         className="w-full p-3 border border-gray-200"
                         {...register("energyType", {
                             valueAsNumber: true,
                             required:
-                                "El tipo de fuente de energía es obligatorio",
+                                "El tipo de energía es obligatorio",
                         })}
                     >
                         <option value="">
-                            Selecciona el tipo de fuente de energía
+                            Selecciona el tipo de energía
                         </option>
                         {energyTypes.data?.content.map((energyType) => (
                             <option key={energyType.id} value={energyType.id}>

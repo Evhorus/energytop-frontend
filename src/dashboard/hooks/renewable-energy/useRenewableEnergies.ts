@@ -63,7 +63,7 @@ export const useRenewableEnergies = ({
     });
 
     const searchRenewableEnergies = useQuery({
-        queryKey: ["searchRenewableEnergies", searchTerm, searchBy],
+        queryKey: ["searchRenewableEnergies"],
         queryFn: () =>
             renewableEnergyService.searchRenewableEnergies(
                 searchTerm!,

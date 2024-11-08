@@ -33,7 +33,7 @@ export const useCountries = ({
 
     // Consulta para buscar países usando un término de búsqueda y un filtro
     const searchCountries = useQuery({
-        queryKey: ["searchCountries", searchTerm, searchBy],
+        queryKey: ["searchCountries"],
         queryFn: () => countriesService.searchCountries(searchTerm!, searchBy!),
         retry: 1,
         enabled: !!searchTerm, // Solo activa esta consulta si hay un término de búsqueda
