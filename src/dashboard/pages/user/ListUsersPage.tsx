@@ -12,6 +12,8 @@ export const ListUsersPage = () => {
     const [searchBy, setSearchBy] = useState("");
 
     const { users, searchUsers } = useUser({ searchTerm, searchBy });
+
+    console.log(searchUsers.data);
     if (users.isLoading) return <Loader />;
     if (!users.data) return null;
     // const { pageSize, totalPages, content } = users.data;
